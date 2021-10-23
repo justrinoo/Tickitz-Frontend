@@ -1,0 +1,25 @@
+.seat_available {
+  width: 20px;
+  height: 20px;
+  background-color: #d6d8e7;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.seat_sold {
+  width: 20px;
+  height: 20px;
+  background-color: #6e7191;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.seat_selected {
+  width: 20px;
+  height: 20px;
+  background-color: #5f2eea;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.seat_available:hover {
+  background-color: #c0c0c0;
+  cursor: pointer;
+}
