@@ -6,7 +6,8 @@ import { withRouter } from "react-router-dom";
 import ListSeats from "../../../components/ListSeats";
 import NumberSeats from "../../../components/NumberSeats";
 import axios from "../../../utils/axios";
-
+import ArrowDown from "../../../assets/img/Arrow-Down.svg";
+import ArrowRight from "../../../assets/img/Arrow-Right.svg";
 export class OrderMovie extends Component {
   constructor(props) {
     super(props);
@@ -28,6 +29,15 @@ export class OrderMovie extends Component {
 
   componentDidMount() {
     this.getDetailOrderInfo();
+    if (
+      !this.state.movieId ||
+      !this.state.scheduleId ||
+      !this.state.dateBooking ||
+      !this.state.timeBooking
+    ) {
+      alert("Pilih Film Terlebih Dahulu!");
+      this.props.history.push("/");
+    }
   }
 
   getDetailOrderInfo = () => {
@@ -93,6 +103,9 @@ export class OrderMovie extends Component {
     }
     // pergi ke halaman payment
   };
+  handleChangeMovie = () => {
+    this.props.history.push("/");
+  };
   render() {
     const parseDate = this.state.dateBooking;
     const leftNumber = [];
@@ -107,8 +120,8 @@ export class OrderMovie extends Component {
       <>
         {/* SubMenu */}
         <div className="subnav__header">
-          <p>Spider-Man: Homecoming</p>
-          <button>Change Movie</button>
+          <p>{this.state.movieName}</p>
+          <button onClick={this.handleChangeMovie}>Change Movie</button>
         </div>
         {/* End SubMenu */}
         {/* <!-- Description Order Page --> */}
@@ -130,12 +143,52 @@ export class OrderMovie extends Component {
                 </div>
               ))}
               <NumberSeats leftNumSeats={leftNumber} rightNumSeats={rightNumber} />
+              <div className="order__movie-list-seating-key">
+                <h6>Seating Key</h6>
+                <div className="order__movie-list-key-info d-flex d-md-none">
+                  <div className="order__movie-list-key-info-down d-flex">
+                    <img
+                      src={ArrowDown}
+                      width="20"
+                      height="20"
+                      className="img-fluid"
+                      alt="seat_bottom"
+                    />
+                    <p className="mt-3 mx-1">A-G</p>
+                  </div>
+                  <div className="order__movie-list-key-info-right d-flex">
+                    <img
+                      src={ArrowRight}
+                      width="20"
+                      height="20"
+                      className="img-fluid"
+                      alt="seat_right"
+                    />
+                    <p className="mt-3 mx-1">1-14</p>
+                  </div>
+                </div>
+                <div className="order__movie-list-seating-key-info">
+                  <div className="seat__info-available">
+                    <div className="seat__available"></div>
+                    <p>Available</p>
+                  </div>
+                  <div className="seat__info-selected">
+                    <div className="seat__selected"></div>
+                    <p>Selected</p>
+                  </div>
+                  <div className="seat__info-lovnest">
+                    <div className="seat__lovnest"></div>
+                    <p>LoveNest</p>
+                  </div>
+                  <div className="seat__info-sold">
+                    <div className="seat__sold"></div>
+                    <p>Sold</p>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="order__movie-container">
-              <Link
-                to="/movie-detail/spiderman-homecoming"
-                className="text-decoration-none order__movie-container-button"
-              >
+              <Link to="/" className="text-decoration-none order__movie-container-button">
                 Change your movie
               </Link>
               <button

@@ -136,6 +136,74 @@
   display: flex;
   justify-content: space-between;
 }
+.order__movie-list-seating-key {
+  margin: 30px 0px;
+}
+.order__movie-list-seating-key h6 {
+  color: #14142b;
+  font-weight: 600;
+  font-size: 18px;
+}
+.order__movie-list-seating-key-info {
+  margin: 30px 0px;
+  display: flex;
+  justify-content: space-around;
+}
+.seat__info-available {
+  display: flex;
+  justify-content: center;
+}
+.seat__info-selected {
+  display: flex;
+  justify-content: center;
+}
+.seat__info-lovnest {
+  display: flex;
+  justify-content: center;
+}
+.seat__info-sold {
+  display: flex;
+  justify-content: center;
+}
+.seat__available {
+  margin: 0px 5px;
+  background-color: #d6d8e7;
+  border-radius: 8px;
+  width: 20px;
+  height: 20px;
+}
+.seat__selected {
+  margin: 0px 5px;
+  /* margin: 0px 62px; */
+  background-color: #5f2eea;
+  width: 20px;
+  height: 20px;
+  border-radius: 8px;
+}
+.seat__sold {
+  margin: 0px 5px;
+  background-color: #6e7191;
+  width: 20px;
+  height: 20px;
+  border-radius: 8px;
+}
+.seat__lovnest {
+  margin: 0px 5px;
+  /* margin: 0px 62px; */
+  background-color: #f589d7;
+  width: 20px;
+  height: 20px;
+  border-radius: 8px;
+}
+.order__movie-list-key-info {
+  justify-content: space-between;
+  align-items: center;
+}
+.order__movie-list-key-info-down {
+}
+.order__movie-list-key-info-right {
+  width: 60%;
+}
 
 @media (max-width: 575.98px) {
   /* Order Page */
@@ -185,6 +253,23 @@
   }
   .subnav__header {
     display: none;
+  }
+  .order__movie-list-card {
+    padding: 33px;
+  }
+  .order__movie-list-seating-key-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+  }
+  .seat__info-selected {
+    margin: 0px 12px;
+  }
+  .seat__info-sold {
+    margin: 0px 12px;
+  }
+  .seat__info-lovnest {
+    margin: 0px 0px;
   }
 }
 /* End Order Movie */

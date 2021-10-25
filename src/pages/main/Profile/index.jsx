@@ -2,101 +2,93 @@ import React, { Component } from "react";
 import Navbar from "../../../components/Navbar";
 import Footer from "../../../components/Footer";
 import "./index.css";
-import ProfileImage from "../../../assets/img/Profile.png";
-import menu from "../../../assets/img/menu.svg";
+import ProfileInformation from "../../../components/ProfileInfo";
+import UserInformation from "../../../components/UserInformation";
+import UserPrivacy from "../../../components/UserPrivacy";
+import axios from "../../../utils/axios";
+import OrderHistory from "../../../components/OrderHistory/order";
 export class Profile extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      users: [],
+      menu: false,
+      isError: true,
+      message: "",
+      userId: props.location.state ? props.location.state.userBooking.userId : "",
+      movieId: props.location.state ? props.location.state.userBooking.movieId : "",
+      scheduleId: props.location.state ? props.location.state.userBooking.scheduleId : "",
+      dateBooking: props.location.state ? props.location.state.userBooking.dateBooking : "",
+      timeBooking: props.location.state ? props.location.state.userBooking.timeBooking : "",
+      seat: props.location.state ? props.location.state.userBooking.seat : "",
+      paymentMethod: props.location.state ? props.location.state.userBooking.paymentMethod : "",
+      movieName: props.location.state ? props.location.state.movieName : ""
+    };
+  }
+  componentDidMount = () => {
+    this.getUserInformation();
+  };
+
+  getUserInformation = () => {
+    axios
+      .get("user")
+      .then((response) => {
+        this.setState({
+          users: response.data.data[0]
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          isError: true,
+          message: error.response.data.message
+        });
+      });
+  };
+  handleMenuProfile = (e) => {
+    if (e.target.textContent === "Account Settings") {
+      this.setState({
+        menu: false
+      });
+    } else {
+      this.setState({
+        menu: true
+      });
+    }
+  };
   render() {
+    const { users } = this.state;
+    const { userId, movieId, scheduleId, dateBooking, timeBooking, seat, paymentMethod } =
+      this.state;
+    const userBooking = {
+      userId,
+      movieId,
+      scheduleId,
+      dateBooking,
+      timeBooking,
+      seat,
+      paymentMethod
+    };
     return (
       <>
         <Navbar />
         <section className="profile">
           <section className="profile__column">
-            <section className="profile__column-info">
-              <div className="profile__column-info-nav-menu">
-                <p>INFO</p>
-                <img src={menu} width="20" height="20" alt="menu" />
-              </div>
-              <div className="profile__column-info-personal">
-                <img src={ProfileImage} alt="" />
-                <h3>Jonas El Rodriguez</h3>
-                <span>Moviegoers</span>
-              </div>
-            </section>
+            <ProfileInformation data={users} />
             <section className="profile__column-settings">
               <div className="profile__column-settings-navigation">
-                <span>Account Settings</span>
-                <span>Order History</span>
+                <button onClick={this.handleMenuProfile}>Account Settings</button>
+                <button onClick={this.handleMenuProfile}>Order History</button>
               </div>
-              <form>
-                <div className="profile__column-settings-detail-information">
-                  <p>Details Information</p>
-                  <hr style={{ border: "1px solid #DEDEDE", opacity: "0.1" }} />
-                  <div className="row">
-                    <div className="col-md-6">
-                      <label style={{ display: "block" }}>First Name</label>
-                      <input
-                        type="text"
-                        className="profile__column-settings-input_form"
-                        value="Jonas"
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <label style={{ display: "block" }}>Last Name</label>
-                      <input
-                        type="text"
-                        className="profile__column-settings-input_form"
-                        value="El Rodriguez"
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <label style={{ display: "block" }}>E-mail</label>
-                      <input
-                        type="text"
-                        className="profile__column-settings-input_form"
-                        value="jonasrodrigu123@gmail.com"
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <label style={{ display: "block" }}>Phone Number</label>
-                      <input
-                        type="text"
-                        className="profile__column-settings-input_form"
-                        value="81445687121"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <button className="profile__column-settings-button-update-account">
-                  Update changes
-                </button>
-              </form>
-              <form>
-                <div className="profile__column-settings-detail-information">
-                  <p>Account and Privacy</p>
-                  <hr style={{ border: "1px solid #DEDEDE", opacity: "0.1" }} />
-                  <div className="row">
-                    <div className="col-md-6">
-                      <label style={{ display: "block" }}>New Password</label>
-                      <input
-                        type="password"
-                        className="profile__column-settings-input_form"
-                        placeholder="Write your password..."
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <label style={{ display: "block" }}>Confirm Password</label>
-                      <input
-                        type="password"
-                        className="profile__column-settings-input_form"
-                        placeholder="Confirm your password..."
-                      />
-                    </div>
-                  </div>
-                </div>
-                <button className="profile__column-settings-button-update-account">
-                  Update changes
-                </button>
-              </form>
+              {!this.state.menu ? (
+                <>
+                  <UserInformation data={users} />
+                  <UserPrivacy />
+                </>
+              ) : (
+                <>
+                  <OrderHistory movieName={this.state.movieName} />
+                </>
+              )}
             </section>
           </section>
         </section>

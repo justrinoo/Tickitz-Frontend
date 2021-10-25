@@ -18,6 +18,7 @@ export class PaymentInfo extends Component {
       scheduleId: props.paymentInfo.scheduleId,
       dateBooking: props.paymentInfo.dateBooking,
       timeBooking: props.paymentInfo.timeBooking,
+      movieName: props.paymentInfo.movieName,
       seat: props.paymentInfo.seat,
       paymentMethod: ""
     };
@@ -33,8 +34,16 @@ export class PaymentInfo extends Component {
   };
   handlePostBooking = (event) => {
     console.log("you has been create booking!", event);
-    const { userId, movieId, scheduleId, dateBooking, timeBooking, seat, paymentMethod } =
-      this.state;
+    const {
+      userId,
+      movieId,
+      scheduleId,
+      dateBooking,
+      timeBooking,
+      seat,
+      paymentMethod,
+      movieName
+    } = this.state;
     const setDataBooking = {
       userId,
       movieId,
@@ -53,7 +62,7 @@ export class PaymentInfo extends Component {
           this.setState({
             booking: response.data.data.results
           });
-          this.props.history.push("/ticket");
+          this.props.history.push("/ticket", { setDataBooking, movieName });
         })
         .catch((error) => console.log(error.response));
     }
@@ -86,12 +95,12 @@ export class PaymentInfo extends Component {
             <hr className="payment__main-info-card-line" />
             <div className="payment__main-info-card-child">
               <p>Number of tickets</p>
-              <span>{paymentInfo.seat.length} pieces</span>
+              <span>{!paymentInfo.seat ? null : paymentInfo.seat.length} pieces</span>
             </div>
             <hr className="payment__main-info-card-line" />
             <div className="payment__main-info-card-child">
               <p>Total payment</p>
-              <span>${paymentInfo.seat.length * 10},00</span>
+              <span>${!paymentInfo.seat ? null : paymentInfo.seat.length * 10},00</span>
             </div>
           </div>
           <div className="payment__main-method">

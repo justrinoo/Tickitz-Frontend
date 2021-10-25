@@ -27,12 +27,12 @@ export class ListSeats extends Component {
     return (
       <>
         <div className="seat">
-          <div className="row">
+          <div className="row seat__row">
             {/* Sisi Pertama */}
-            <div className="col">{alphabetSeat}</div>
+            <div className="col seat__column seat__column-text">{alphabetSeat}</div>
             {/* Kolom Seat Pertama */}
             {this.state.leftSeats.map((num, idx) => (
-              <div className="col" key={idx}>
+              <div className="col seat__column" key={idx}>
                 <div
                   className={`text-center ${
                     soldSeats.includes(num)
@@ -48,10 +48,10 @@ export class ListSeats extends Component {
               </div>
             ))}
             {/* Pembaatas */}
-            <div className="col"></div>
+            <div className="col seat__column"></div>
             {/* Kolom Seat Pertama akhir */}
             {this.state.rightSeats.map((num, idx) => (
-              <div className="col" key={idx}>
+              <div className="col seat__column" key={idx}>
                 <div
                   className={`text-center ${
                     soldSeats.includes(num)

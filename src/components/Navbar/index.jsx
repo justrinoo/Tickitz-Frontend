@@ -3,6 +3,7 @@ import LogoTickitz from "../../assets/img/Logo.svg";
 import { Search } from "react-bootstrap-icons";
 import { Link, withRouter } from "react-router-dom";
 import Profile from "../../assets/img/Profile.png";
+import axios from "../../utils/axios";
 class Navbar extends Component {
   constructor() {
     super();
@@ -10,7 +11,10 @@ class Navbar extends Component {
       menu: false,
       searchMenu: false,
       show: false,
-      search: ""
+      search: "",
+      movies: [],
+      isError: false,
+      message: ""
     };
   }
   handleMenuMobile = () => {
@@ -37,13 +41,33 @@ class Navbar extends Component {
   };
 
   handleFindMovie = (event) => {
+    axios
+      .get(`movie?searchName=${this.state.search}`)
+      .then((response) => {
+        // const movies = response.data.data.map((value) => value.title);
+        this.setState({
+          movies: response.data.data,
+          isError: false
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          isError: true,
+          message: error.response.data.message
+        });
+      });
     this.setState({
       search: event.target.value
     });
   };
+  handleDetailSearchMovie = (id) => {
+    this.props.history.push(`/detail-movie/${id}`);
+  };
   render() {
     const token = localStorage.getItem("token");
-    // console.log(this.props);
+    console.log(this.state.movies);
+    console.log(this.state.search);
+    console.log(this.state.message);
     return (
       <>
         <header>
@@ -60,10 +84,10 @@ class Navbar extends Component {
                 <Link to="/" className="d-none d-md-inline-block mx-5">
                   Home
                 </Link>
-                <Link to="/" className="mx-4 d-none d-md-inline-block">
+                <Link to="/payment" className="mx-4 d-none d-md-inline-block">
                   Payment
                 </Link>
-                <Link to="/" className="mx-4 d-none d-md-inline-block">
+                <Link to="/profile" className="mx-4 d-none d-md-inline-block">
                   Profile
                 </Link>
               </div>
@@ -99,12 +123,20 @@ class Navbar extends Component {
                         <div className="navigation__homepage-search-movie">
                           <p className="text-dark fw-bold">Search: {this.state.search}</p>
                           <hr className="text-dark" />
-                          <Link
-                            to="/detail-movie/1"
-                            className="navigation__homepage-search-movie-link text-decoration-none "
-                          >
-                            Spiderman: HomeComing
-                          </Link>
+                          {this.state.isError ? (
+                            <p className="text-dark fw-bold mx-5">{this.state.message}</p>
+                          ) : (
+                            this.state.movies.map((movie) => (
+                              <div key={movie.id}>
+                                <button
+                                  className="navigation__homepage-search-movie-link text-decoration-none"
+                                  onClick={() => this.handleDetailSearchMovie(movie.id)}
+                                >
+                                  {movie.title}
+                                </button>
+                              </div>
+                            ))
+                          )}
                           <hr />
                         </div>
                       ) : null}
