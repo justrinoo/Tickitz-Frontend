@@ -94,6 +94,7 @@
   margin: 15px 5px;
   padding: 18px 12px;
   text-align: center;
+  cursor: pointer;
 }
 .payment__main-method-card-payment_choose {
   border: 2px solid #dedede;

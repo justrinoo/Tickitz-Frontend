@@ -26,7 +26,9 @@ class UpCommingMovies extends Component {
           upcommingMovies: response.data.data
         });
       })
-      .catch((error) => console.log(error.response));
+      .catch((error) => {
+        new Error(error.response.data.message);
+      });
   };
 
   handleMonth = (e) => {
@@ -35,7 +37,8 @@ class UpCommingMovies extends Component {
       .get(`movie/upcomming?date=${month}`)
       .then((response) => {
         this.setState({
-          upcommingMovies: response.data.data
+          upcommingMovies: response.data.data,
+          isError: false
         });
       })
       .catch((error) => {
@@ -65,9 +68,14 @@ class UpCommingMovies extends Component {
 
           {/* <!-- LIST MOVIES UPCOMMING --> */}
           <div className="row flex-nowrap mt-5 upcomming__movies-list-main">
-            {this.state.upcommingMovies.map((movie) => (
-              <>
-                <div className="col-sm-6 col-md-2 upcomming__movies-list text-center">
+            {this.state.isError ? (
+              <p className="text-center fs-2">Not movie yet 🥺</p>
+            ) : (
+              this.state.upcommingMovies.map((movie) => (
+                <div
+                  className="col-sm-6 col-md-2 upcomming__movies-list text-center"
+                  key={movie.id}
+                >
                   <img
                     src={`http://localhost:3001/uploads/movie/${movie.image}`}
                     alt="Movies Upcomming"
@@ -77,8 +85,8 @@ class UpCommingMovies extends Component {
                   <span className="upcomming__movies--desc text-muted">{movie.category}</span>
                   <button className="upcomming__movies--button-details">Details</button>
                 </div>
-              </>
-            ))}
+              ))
+            )}
           </div>
           {/* <!-- END LIST MOVIES UPCOMMING --> */}
         </section>

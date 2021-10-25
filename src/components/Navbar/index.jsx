@@ -9,7 +9,8 @@ class Navbar extends Component {
     this.state = {
       menu: false,
       searchMenu: false,
-      show: false
+      show: false,
+      search: ""
     };
   }
   handleMenuMobile = () => {
@@ -35,6 +36,11 @@ class Navbar extends Component {
     }
   };
 
+  handleFindMovie = (event) => {
+    this.setState({
+      search: event.target.value
+    });
+  };
   render() {
     const token = localStorage.getItem("token");
     // console.log(this.props);
@@ -86,9 +92,22 @@ class Navbar extends Component {
                       <input
                         type="text"
                         className="form-control d-none d-md-block"
-                        placeholder="Find Your Movie..."
+                        placeholder="Search Movie..."
                         onChange={this.handleFindMovie}
                       />
+                      {this.state.search ? (
+                        <div className="navigation__homepage-search-movie">
+                          <p className="text-dark fw-bold">Search: {this.state.search}</p>
+                          <hr className="text-dark" />
+                          <Link
+                            to="/detail-movie/1"
+                            className="navigation__homepage-search-movie-link text-decoration-none "
+                          >
+                            Spiderman: HomeComing
+                          </Link>
+                          <hr />
+                        </div>
+                      ) : null}
                     </>
                   ) : (
                     <Search />

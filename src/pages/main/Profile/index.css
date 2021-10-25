@@ -1,0 +1,92 @@
+.profile {
+  padding: 50px 92px;
+  background-color: #f5f6f8;
+}
+.profile__column {
+  display: flex;
+  justify-content: space-between;
+}
+.profile__column-info {
+  background-color: #ffffff;
+  box-shadow: 0px 8px 32px rgba(186, 186, 186, 0.08);
+  border-radius: 24px;
+  padding: 32px;
+  width: 25%;
+  height: 0%;
+}
+.profile__column-settings {
+  padding: 0px 24px;
+  width: 75%;
+}
+.profile__column-info-nav-menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.profile__column-info-nav-menu p {
+  color: #4e4b66;
+}
+.profile__column-info-personal {
+  text-align: center;
+  margin-top: 20px;
+}
+.profile__column-info-personal h3 {
+  margin-top: 30px;
+  font-size: 20px;
+  color: #14142b;
+  font-weight: 600;
+}
+.profile__column-info-personal span {
+  font-size: 20px;
+  color: #4e4b66;
+  font-weight: normal;
+  font-size: 14px;
+}
+.profile__column-settings-navigation {
+  display: flex;
+  padding: 16px 42px;
+  background: #ffffff;
+  border-radius: 16px;
+}
+.profile__column-settings-navigation span:nth-child(1) {
+  margin: 0px 15px;
+  font-size: 18px;
+  color: #14142b;
+  font-weight: 600;
+}
+.profile__column-settings-navigation span:nth-child(2) {
+  margin: 0px 15px;
+  font-size: 18px;
+  color: #aaaaaa;
+}
+.profile__column-settings-navigation span:hover {
+  color: #14142b;
+  cursor: pointer;
+}
+.profile__column-settings-detail-information {
+  background: #ffffff;
+  border-radius: 24px;
+}
+.profile__column-settings-detail-information {
+  margin: 32px 0px;
+  padding: 42px;
+}
+.profile__column-settings-detail-information p {
+  color: #14142b;
+}
+.profile__column-settings-input_form {
+  margin: 12px 0px;
+  padding: 12px 24px;
+  width: 100%;
+  background-color: #fcfdfe;
+  border: 1px solid #dedede;
+  border-radius: 16px;
+}
+.profile__column-settings-button-update-account {
+  background-color: #5f2eea;
+  border-radius: 16px;
+  border: none;
+  color: #ffffff;
+  padding: 12px;
+  width: 40%;
+}

@@ -7,6 +7,7 @@ import "./payment.css";
 export class Payment extends Component {
   render() {
     const data = this.props.location.state.setDataPayment;
+    console.log(data);
     return (
       <>
         {/* <!-- Sub Navigation --> */}

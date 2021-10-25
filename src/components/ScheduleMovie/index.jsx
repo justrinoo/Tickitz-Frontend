@@ -40,19 +40,30 @@ class ScheduleMovie extends Component {
       });
   };
 
-  handleLocation = (e) => {
+  getSchedule = () => {
     axios
       .get(
-        `schedule?searchMovieId=${this.state.movieId}&searchLocation=${e.target.value}&page=${this.state.page}&limit=${this.state.limit}&sort=ASC`
+        `schedule?searchMovieId=${this.state.movieId}&searchLocation=${this.state.searchLocation}&page=${this.state.page}&limit=${this.state.limit}&sort=ASC`
       )
       .then((response) => {
         this.setState({
           schedules: response.data.data,
-          showSchedule: true,
           pageInfo: response.data.pagination
         });
       })
       .catch((error) => console.log(error.message));
+  };
+
+  handleLocation = (e) => {
+    this.setState(
+      {
+        searchLocation: e.target.value,
+        showSchedule: true
+      },
+      () => {
+        this.getSchedule();
+      }
+    );
   };
 
   handleSchedulePagination = (event) => {
@@ -62,16 +73,14 @@ class ScheduleMovie extends Component {
         page: selectedPage
       },
       () => {
-        this.handleLocation;
-        console.log(this.state.page);
-        console.log(this.state.schedules);
+        this.getSchedule();
       }
     );
   };
 
   componentDidMount() {
+    this.getSchedule();
     this.getLocation();
-    this.handleLocation;
   }
   handleDateSchedule = (event) => {
     this.setState({
@@ -100,6 +109,7 @@ class ScheduleMovie extends Component {
   render() {
     const filterLocation = this.state.schedules.map((value) => value.location).pop();
     const location = filterLocation === undefined ? null : filterLocation;
+    console.log(this.state.pageInfo);
     return (
       <>
         <section className="detail__schedule">
@@ -128,7 +138,7 @@ class ScheduleMovie extends Component {
         <section className="detail__list_schedule">
           <div className="detail__list_schedule-container">
             <>
-              {this.state.showSchedule ? (
+              {this.state.schedules.length > 0 ? (
                 this.state.schedules.map((schedule) => {
                   const filterTime = schedule.time;
                   const newTime = filterTime.filter((value) => value === this.state.timeSchedule);
@@ -190,7 +200,7 @@ class ScheduleMovie extends Component {
             </>
           </div>
         </section>
-        {this.state.showSchedule ? (
+        {this.state.pageInfo.totalPage ? (
           <SchedulePagination
             data={this.state.schedules}
             pageInfo={this.state.pageInfo}

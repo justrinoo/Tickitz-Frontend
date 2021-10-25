@@ -12,7 +12,7 @@ import BasicHome from "./pages/basic-livecode/Home";
 import BasicMovieDetail from "./pages/basic-livecode/DetailMovie";
 import Payment from "./pages/main/Payment/payment";
 import Ticket from "./pages/main/Ticket/ticket-result";
-
+import Profile from "./pages/main/Profile";
 class App extends Component {
   render() {
     return (
@@ -57,6 +57,7 @@ class App extends Component {
             )}
           />
           <Route exact path="/ticket" component={Ticket} />
+          <Route exact path="/profile" component={Profile} />
           <Route exact path="/login" component={Login} />
         </Switch>
       </Router>

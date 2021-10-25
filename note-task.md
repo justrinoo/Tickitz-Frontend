@@ -30,3 +30,13 @@
   - Handling Seat by available,selected, and sold, lovnest optional
   - get detail order movie
   - Handling Order
+
+### Question One on One DailyStandUp
+
+- Pagination
+- Jwt Expired => Data Movienya di showing dulu atau tidak ?
+- Hover Movies
+- Logout
+- view all
+- Pemanggilan API Boleh lebih dari 2x ?
+- Loyal Points
