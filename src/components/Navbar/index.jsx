@@ -8,7 +8,8 @@ class Navbar extends Component {
     super();
     this.state = {
       menu: false,
-      searchMenu: false
+      searchMenu: false,
+      show: false
     };
   }
   handleMenuMobile = () => {
@@ -22,6 +23,18 @@ class Navbar extends Component {
       searchMenu: true
     });
   };
+  handleProfile = () => {
+    if (!this.state.show) {
+      this.setState({
+        show: true
+      });
+    } else {
+      this.setState({
+        show: false
+      });
+    }
+  };
+
   render() {
     const token = localStorage.getItem("token");
     // console.log(this.props);
@@ -74,6 +87,7 @@ class Navbar extends Component {
                         type="text"
                         className="form-control d-none d-md-block"
                         placeholder="Find Your Movie..."
+                        onChange={this.handleFindMovie}
                       />
                     </>
                   ) : (
@@ -83,13 +97,23 @@ class Navbar extends Component {
               </div>
               <div className="mx-3 d-none d-md-inline-flex">
                 {token !== null ? (
-                  <img src={Profile} className="img-fluid w-50" alt="Profile" />
+                  <img
+                    src={Profile}
+                    className="img-fluid w-50"
+                    alt="Profile"
+                    onClick={this.handleProfile}
+                  />
                 ) : (
                   <button className="button__signup--homepage" onClick={this.handleLinkSignIn}>
                     Sign In
                   </button>
                 )}
               </div>
+              {this.state.show ? (
+                <Link to="/logout" className="text-decoration-none text-dark fw-bold">
+                  logout
+                </Link>
+              ) : null}
             </div>
           </nav>
           {/* <!-- Menu Mobile --> */}

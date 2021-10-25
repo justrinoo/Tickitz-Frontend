@@ -3,6 +3,8 @@ import IcLocation from "../../assets/img/location.svg";
 import axios from "../../utils/axios";
 import Premier1 from "../../assets/img/Sponsor1.png";
 import { withRouter } from "react-router-dom";
+import SchedulePagination from "../../components/SchedulePagination";
+
 class ScheduleMovie extends Component {
   constructor(props) {
     super(props);
@@ -16,7 +18,8 @@ class ScheduleMovie extends Component {
       showSchedule: false,
       selectedTime: true,
       page: 1,
-      limit: 3
+      limit: 1,
+      pageInfo: []
     };
   }
 
@@ -43,13 +46,27 @@ class ScheduleMovie extends Component {
         `schedule?searchMovieId=${this.state.movieId}&searchLocation=${e.target.value}&page=${this.state.page}&limit=${this.state.limit}&sort=ASC`
       )
       .then((response) => {
-        // console.log(this.state.searchDate);
         this.setState({
           schedules: response.data.data,
-          showSchedule: true
+          showSchedule: true,
+          pageInfo: response.data.pagination
         });
       })
       .catch((error) => console.log(error.message));
+  };
+
+  handleSchedulePagination = (event) => {
+    const selectedPage = event.selected + 1;
+    this.setState(
+      {
+        page: selectedPage
+      },
+      () => {
+        this.handleLocation;
+        console.log(this.state.page);
+        console.log(this.state.schedules);
+      }
+    );
   };
 
   componentDidMount() {
@@ -81,6 +98,8 @@ class ScheduleMovie extends Component {
   };
 
   render() {
+    const filterLocation = this.state.schedules.map((value) => value.location).pop();
+    const location = filterLocation === undefined ? null : filterLocation;
     return (
       <>
         <section className="detail__schedule">
@@ -102,13 +121,7 @@ class ScheduleMovie extends Component {
               onChange={this.handleLocation}
             >
               <option hidden>Set a City</option>
-              {this.state.schedules.map((cities) => (
-                <>
-                  <option value={cities.location} key={cities.id_schedule}>
-                    {cities.location}
-                  </option>
-                </>
-              ))}
+              <option value={location}>{location}</option>
             </select>
           </div>
         </section>
@@ -177,6 +190,13 @@ class ScheduleMovie extends Component {
             </>
           </div>
         </section>
+        {this.state.showSchedule ? (
+          <SchedulePagination
+            data={this.state.schedules}
+            pageInfo={this.state.pageInfo}
+            handleSchedule={this.handleSchedulePagination}
+          />
+        ) : null}
       </>
     );
   }

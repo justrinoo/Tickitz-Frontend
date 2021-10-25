@@ -37,6 +37,7 @@ class ListMovies extends Component {
     localStorage.setItem("nameMovie", detailData.title);
     this.props.history.push(`/detail-movie/${id}`);
   };
+
   render() {
     const { movies } = this.state;
     return (

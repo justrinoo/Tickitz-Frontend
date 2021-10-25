@@ -10,6 +10,8 @@ import BasicReact from "./pages/basic-livecode/React";
 import LoginPage from "./pages/basic-livecode/Login";
 import BasicHome from "./pages/basic-livecode/Home";
 import BasicMovieDetail from "./pages/basic-livecode/DetailMovie";
+import Payment from "./pages/main/Payment/payment";
+import Ticket from "./pages/main/Ticket/ticket-result";
 
 class App extends Component {
   render() {
@@ -20,17 +22,7 @@ class App extends Component {
           <Route path="/basic-login" exact component={LoginPage} />
           <Route path="/basic-home" exact component={BasicHome} />
           <Route path="/basic-detail/:movieId" exact component={BasicMovieDetail} />
-          <Route
-            path="/"
-            exact
-            render={(props) => (
-              <>
-                <Navbar {...props} />
-                <Home />
-                <Footer />
-              </>
-            )}
-          />
+          <Route path="/" exact component={Home} />
           <Route
             exact
             path="/detail-movie/:movieId"
@@ -53,6 +45,18 @@ class App extends Component {
               </>
             )}
           />
+          <Route
+            exact
+            path="/payment"
+            render={(props) => (
+              <>
+                <Navbar {...props} />
+                <Payment />
+                <Footer />
+              </>
+            )}
+          />
+          <Route exact path="/ticket" component={Ticket} />
           <Route exact path="/login" component={Login} />
         </Switch>
       </Router>

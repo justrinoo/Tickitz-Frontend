@@ -4,10 +4,14 @@ import { Link } from "react-router-dom";
 import ListMovies from "../../../components/List-Movies/movies";
 import UpCommingMovies from "../../../components/Upcomming-Movies";
 import JoinTickitz from "../../../components/JoinTickitz";
+import Navbar from "../../../components/Navbar";
+import Footer from "../../../components/Footer";
+import axios from "../../../utils/axios";
 class Home extends Component {
   render() {
     return (
       <>
+        <Navbar />
         <main className="container mx-auto  hero">
           <div className="row">
             <section className="col-md-6 hero__spacing--column-left">
@@ -48,6 +52,7 @@ class Home extends Component {
           <JoinTickitz />
           {/* <!-- Akhir Joining Tickitz --> */}
         </main>
+        <Footer />
       </>
     );
   }

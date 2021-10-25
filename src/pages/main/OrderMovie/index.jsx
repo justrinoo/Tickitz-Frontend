@@ -19,6 +19,7 @@ export class OrderMovie extends Component {
       dateBooking: props.location.state.dateSchedule ? props.location.state.dateSchedule : "",
       timeBooking: props.location.state.timeSchedule ? props.location.state.timeSchedule : "",
       user_id: localStorage.getItem("user_id"),
+      movieName: localStorage.getItem("nameMovie"),
       price: 10,
       isError: false,
       message: ""
@@ -72,13 +73,22 @@ export class OrderMovie extends Component {
     } else {
       const {
         movieId,
+        movieName,
         scheduleId,
         dateBooking,
         timeBooking,
         selectSeats: seat,
         user_id
       } = this.state;
-      const setDataPayment = { movieId, scheduleId, dateBooking, timeBooking, seat, user_id };
+      const setDataPayment = {
+        movieId,
+        scheduleId,
+        dateBooking,
+        timeBooking,
+        seat,
+        user_id,
+        movieName
+      };
       this.props.history.push("/payment", { setDataPayment });
     }
     // pergi ke halaman payment
@@ -151,7 +161,7 @@ export class OrderMovie extends Component {
                 <div className="order__movie-info-order-list-child">
                   <p className="order__movie-info-order-title-none">Movie Selected</p>
                   <span className="order__movie-info-order-title-movie">
-                    {localStorage.getItem("nameMovie")}
+                    {this.state.movieName}
                   </span>
                 </div>
                 <div className="order__movie-info-order-list-child">

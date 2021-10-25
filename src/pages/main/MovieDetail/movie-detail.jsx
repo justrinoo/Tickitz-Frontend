@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import "./movie-detail.css";
 import DetailMovie from "../../../components/DetailMovie";
 import ScheduleMovie from "../../../components/ScheduleMovie";
-import SchedulePagination from "../../../components/SchedulePagination";
 
 class MovieDetail extends Component {
   render() {
@@ -12,7 +11,6 @@ class MovieDetail extends Component {
         <main className="main__detail-movie">
           <DetailMovie />
           <ScheduleMovie id={movieId} />
-          <SchedulePagination />
         </main>
       </>
     );
