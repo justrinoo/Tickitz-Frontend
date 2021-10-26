@@ -8,21 +8,13 @@ import UserPrivacy from "../../../components/UserPrivacy";
 import axios from "../../../utils/axios";
 import OrderHistory from "../../../components/OrderHistory/order";
 export class Profile extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       users: [],
       menu: false,
       isError: true,
-      message: "",
-      userId: props.location.state ? props.location.state.userBooking.userId : "",
-      movieId: props.location.state ? props.location.state.userBooking.movieId : "",
-      scheduleId: props.location.state ? props.location.state.userBooking.scheduleId : "",
-      dateBooking: props.location.state ? props.location.state.userBooking.dateBooking : "",
-      timeBooking: props.location.state ? props.location.state.userBooking.timeBooking : "",
-      seat: props.location.state ? props.location.state.userBooking.seat : "",
-      paymentMethod: props.location.state ? props.location.state.userBooking.paymentMethod : "",
-      movieName: props.location.state ? props.location.state.movieName : ""
+      message: ""
     };
   }
   componentDidMount = () => {
@@ -57,17 +49,7 @@ export class Profile extends Component {
   };
   render() {
     const { users } = this.state;
-    const { userId, movieId, scheduleId, dateBooking, timeBooking, seat, paymentMethod } =
-      this.state;
-    const userBooking = {
-      userId,
-      movieId,
-      scheduleId,
-      dateBooking,
-      timeBooking,
-      seat,
-      paymentMethod
-    };
+
     return (
       <>
         <Navbar />

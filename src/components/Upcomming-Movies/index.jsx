@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "../../utils/axios";
 import DateMonth from "../Upcomming-Date";
+import { withRouter } from "react-router-dom";
+
 class UpCommingMovies extends Component {
   constructor() {
     super();
@@ -48,6 +50,10 @@ class UpCommingMovies extends Component {
         });
       });
   };
+
+  handleDetail = (id) => {
+    this.props.history.push(`/detail-movie/${id}`);
+  };
   render() {
     return (
       <>
@@ -83,7 +89,12 @@ class UpCommingMovies extends Component {
                   />
                   <p className="fw-bold mt-3">{movie.title}</p>
                   <span className="upcomming__movies--desc text-muted">{movie.category}</span>
-                  <button className="upcomming__movies--button-details">Details</button>
+                  <button
+                    className="upcomming__movies--button-details"
+                    onClick={() => this.handleDetail(movie.id)}
+                  >
+                    Details
+                  </button>
                 </div>
               ))
             )}
@@ -94,4 +105,4 @@ class UpCommingMovies extends Component {
     );
   }
 }
-export default UpCommingMovies;
+export default withRouter(UpCommingMovies);

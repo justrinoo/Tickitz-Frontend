@@ -1,7 +1,7 @@
 import axios from "axios";
-
+console.log(process.env);
 const axiosApiIntances = axios.create({
-  baseURL: "http://localhost:3001/"
+  baseURL: `http://${process.env.REACT_APP_DEV}`
 });
 
 // Add a request interceptor

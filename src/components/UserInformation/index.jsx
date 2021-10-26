@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 export class UserInformation extends Component {
   render() {
-    const user = this.props.data;
+    const { data } = this.props;
     return (
       <>
         <form>
@@ -15,7 +15,7 @@ export class UserInformation extends Component {
                 <input
                   type="text"
                   className="profile__column-settings-input_form"
-                  value={user.firstName}
+                  value={data.firstName}
                 />
               </div>
               <div className="col-md-6">
@@ -23,7 +23,7 @@ export class UserInformation extends Component {
                 <input
                   type="text"
                   className="profile__column-settings-input_form"
-                  value={user.lastName}
+                  value={data.lastName}
                 />
               </div>
               <div className="col-md-6">
@@ -31,7 +31,7 @@ export class UserInformation extends Component {
                 <input
                   type="text"
                   className="profile__column-settings-input_form"
-                  value={user.email}
+                  value={data.email}
                 />
               </div>
               <div className="col-md-6">
@@ -39,7 +39,7 @@ export class UserInformation extends Component {
                 <input
                   type="text"
                   className="profile__column-settings-input_form"
-                  value={user.phoneNumber}
+                  value={data.phoneNumber}
                 />
               </div>
             </div>
