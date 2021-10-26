@@ -9,7 +9,7 @@ export class UserPrivacy extends Component {
             <p>Account and Privacy</p>
             <hr style={{ border: "1px solid #DEDEDE", opacity: "0.1" }} />
             <div className="row">
-              <div className="col-md-6">
+              <div className="col-md-6 profile__column-settings-spacing">
                 <label style={{ display: "block" }}>New Password</label>
                 <input
                   type="password"
@@ -17,7 +17,7 @@ export class UserPrivacy extends Component {
                   placeholder="Write your password..."
                 />
               </div>
-              <div className="col-md-6">
+              <div className="col-md-6 profile__column-settings-spacing">
                 <label style={{ display: "block" }}>Confirm Password</label>
                 <input
                   type="password"

@@ -68,7 +68,10 @@ export class OrderMovie extends Component {
       });
     } else {
       if (this.state.selectSeats.length >= 5) {
-        alert("kursi tidak boleh lebih dari 5!");
+        this.setState({
+          isError: true,
+          message: "Kursi tidak boleh lebih dari 5!"
+        });
       } else {
         this.setState({
           selectSeats: [...this.state.selectSeats, seat]
@@ -130,6 +133,9 @@ export class OrderMovie extends Component {
             <h4 className="order__movie-list-title">Choose Your Seat</h4>
             <div className="order__movie-list-card">
               <p>Choose Your Seats</p>
+              {this.state.isError ? (
+                <p className="text-end fw-bold text-danger">{this.state.message}</p>
+              ) : null}
               <hr className="order__movie-list-line" />
               {/* List Seat */}
               {this.state.seats.map((seat, idx) => (

@@ -7,7 +7,8 @@ export class OrderHistory extends Component {
   constructor() {
     super();
     this.state = {
-      orders: []
+      orders: [],
+      showDetails: false
     };
   }
 
@@ -24,6 +25,17 @@ export class OrderHistory extends Component {
         });
       })
       .catch((error) => console.log(error.response));
+  };
+  handleShowDetails = (event) => {
+    if (event.target.textContent === "Show Details") {
+      this.setState({
+        showDetails: true
+      });
+    } else if (!event.target.textContent === "Show Details") {
+      this.setState({
+        showDetails: false
+      });
+    }
   };
   render() {
     const { orders } = this.state;
@@ -57,11 +69,38 @@ export class OrderHistory extends Component {
                       {order.statusUsed !== "active" ? "Ticket Used" : "Ticket in active"}
                     </button>
 
-                    <button className="profile__column-settings-order-history-bottom-show-details">
+                    <button
+                      className="d-none d-md-block profile__column-settings-order-history-bottom-show-details"
+                      onClick={this.handleShowDetails}
+                    >
                       Show Details
                     </button>
                   </div>
                 </div>
+                {this.state.showDetails ? (
+                  <div className="profile__column-settings-order-history-bottom-show-details">
+                    <div className="profile__column-settings-order-history-show-details-title">
+                      <p>Seats</p>
+                      <span>{order.seat}</span>
+                    </div>
+                    <div className="profile__column-settings-order-history-show-details-title">
+                      <p>Date Booking</p>
+                      <span>{new Date(order.dateBooking).toDateString()}</span>
+                    </div>
+                    <div className="profile__column-settings-order-history-show-details-title">
+                      <p>Time Booking</p>
+                      <span>{order.timeBooking}</span>
+                    </div>
+                    <div className="profile__column-settings-order-history-show-details-title">
+                      <p>paymentMethod</p>
+                      <span>{order.paymentMethod}</span>
+                    </div>
+                    <div className="profile__column-settings-order-history-show-details-title">
+                      <p>Total Ticket</p>
+                      <span>{order.totalTicket}</span>
+                    </div>
+                  </div>
+                ) : null}
               </div>
             ))
           ) : (

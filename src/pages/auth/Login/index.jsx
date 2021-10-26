@@ -17,6 +17,7 @@ class Login extends Component {
         email: "",
         password: ""
       },
+      users: [],
       isError: false,
       message: ""
     };
@@ -30,6 +31,24 @@ class Login extends Component {
       }
     });
   };
+
+  componentDidMount() {
+    this.handleGetUser();
+  }
+
+  handleGetUser = () => {
+    axios
+      .get("user", localStorage.getItem("user_id"))
+      .then((response) => {
+        this.setState({
+          users: response.data.data[0]
+        });
+      })
+      .catch((error) => {
+        new Error(error.response.data.message);
+      });
+  };
+
   handleSubmitForm = (event) => {
     event.preventDefault();
     axios
@@ -37,6 +56,12 @@ class Login extends Component {
       .then((response) => {
         const token = response.data.data.token;
         const userId = response.data.data.id;
+        localStorage.setItem("user_id", userId);
+        localStorage.setItem("firstName", this.state.users.firstName);
+        localStorage.setItem("lastName", this.state.users.lastName);
+        localStorage.setItem("email", this.state.users.email);
+        localStorage.setItem("phoneNumber", this.state.users.phoneNumber);
+        localStorage.setItem("image", this.state.users.image);
         localStorage.setItem("user_id", userId);
         localStorage.setItem("token", token);
         this.props.history.push("/");

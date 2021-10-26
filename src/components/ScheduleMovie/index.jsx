@@ -18,7 +18,7 @@ class ScheduleMovie extends Component {
       showSchedule: false,
       selectedTime: true,
       page: 1,
-      limit: 1,
+      limit: 3,
       pageInfo: []
     };
   }

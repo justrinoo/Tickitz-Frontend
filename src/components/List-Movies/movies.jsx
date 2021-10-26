@@ -38,6 +38,10 @@ class ListMovies extends Component {
     this.props.history.push(`/detail-movie/${id}`);
   };
 
+  handleNotBookNow = () => {
+    alert("Pilih Film Terlebih dahulu!");
+  };
+
   render() {
     const { movies } = this.state;
     return (
@@ -62,7 +66,12 @@ class ListMovies extends Component {
                     >
                       Details
                     </button>
-                    <button className="movies__list--card-hover-btn">Book Now</button>
+                    <button
+                      className="movies__list--card-hover-btn"
+                      onClick={this.handleNotBookNow}
+                    >
+                      Book Now
+                    </button>
                   </div>
                 </div>
               ))

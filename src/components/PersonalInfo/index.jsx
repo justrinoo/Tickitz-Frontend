@@ -13,8 +13,7 @@ export class PersonalInfo extends Component {
                 type="text"
                 className="personal__main-info-card-input"
                 name="userId"
-                value="Jonas El Rodriguez"
-                disabled
+                value={localStorage.getItem("firstName")}
               />
             </div>
             <div className="personal__main-info-card-child">
@@ -22,7 +21,7 @@ export class PersonalInfo extends Component {
               <input
                 type="email"
                 className="personal__main-info-card-input"
-                placeholder="jonasrodri123@gmail.com"
+                value={localStorage.getItem("email")}
               />
             </div>
             <div className="personal__main-info-card-child">
@@ -30,8 +29,8 @@ export class PersonalInfo extends Component {
               <input
                 type="text"
                 className="personal__main-info-card-input"
-                placeholder="81445687121"
                 name="phoneNumber"
+                value={localStorage.getItem("phoneNumber")}
               />
             </div>
             <div className="personal__main-info-card-alert">

@@ -49,7 +49,7 @@ class DetailMovieComponent extends Component {
                 <div className="detail__movie--desc-mobile">
                   <div className="detail__movie--desc-child">
                     <span className="detail__movie-desc-title">Release Date</span>
-                    <p>{movie.releaseDate}</p>
+                    <p>{new Date(movie.releaseDate).toDateString()}</p>
                   </div>
                   <div className="detail__movie--desc-child">
                     <span className="detail__movie-desc-title">Duration</span>

@@ -14,6 +14,7 @@ export class Profile extends Component {
       users: [],
       menu: false,
       isError: true,
+      isActive: true,
       message: ""
     };
   }
@@ -39,11 +40,13 @@ export class Profile extends Component {
   handleMenuProfile = (e) => {
     if (e.target.textContent === "Account Settings") {
       this.setState({
-        menu: false
+        menu: false,
+        isActive: true
       });
     } else {
       this.setState({
-        menu: true
+        menu: true,
+        isActive: false
       });
     }
   };
@@ -53,13 +56,53 @@ export class Profile extends Component {
     return (
       <>
         <Navbar />
+        <header className="d-flex d-md-none profile__column-navigation-mobile">
+          <button
+            className={`${
+              this.state.isActive
+                ? "profile__column-settings-navigation-active-mobile"
+                : "profile__column-settings-navigation-not-active-mobile"
+            }`}
+            onClick={this.handleMenuProfile}
+          >
+            Account Settings
+          </button>
+          <button
+            className={`${
+              !this.state.isActive
+                ? "profile__column-settings-navigation-active-mobile"
+                : "profile__column-settings-navigation-not-active-mobile"
+            }`}
+            onClick={this.handleMenuProfile}
+          >
+            Order History
+          </button>
+        </header>
         <section className="profile">
           <section className="profile__column">
             <ProfileInformation data={users} />
             <section className="profile__column-settings">
               <div className="profile__column-settings-navigation">
-                <button onClick={this.handleMenuProfile}>Account Settings</button>
-                <button onClick={this.handleMenuProfile}>Order History</button>
+                <button
+                  className={`${
+                    this.state.isActive
+                      ? "profile__column-settings-navigation-active "
+                      : "profile__column-settings-navigation-not-active"
+                  }`}
+                  onClick={this.handleMenuProfile}
+                >
+                  Account Settings
+                </button>
+                <button
+                  className={`${
+                    !this.state.isActive
+                      ? "profile__column-settings-navigation-active "
+                      : "profile__column-settings-navigation-not-active "
+                  }`}
+                  onClick={this.handleMenuProfile}
+                >
+                  Order History
+                </button>
               </div>
               {!this.state.menu ? (
                 <>
