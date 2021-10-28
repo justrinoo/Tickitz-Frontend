@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import ProfileImage from "../../assets/img/Profile.png";
 import menu from "../../assets/img/menu.svg";
+import { connect } from "react-redux";
 export class ProfileInfo extends Component {
   render() {
-    const user = this.props.data;
+    const { user } = this.props;
     return (
       <>
         <section className="profile__column-info">
@@ -14,10 +15,10 @@ export class ProfileInfo extends Component {
           <div className="profile__column-info-personal">
             <img src={ProfileImage} alt="" />
             <h3>
-              {user.firstName}
-              {user.lastName}
+              {user.users.firstName !== "" ? user.users.firstName : null}
+              {user.users.lastName !== "" ? user.users.lastName : null}
             </h3>
-            <span>{user.email}</span>
+            <span>{user.users.email}</span>
           </div>
         </section>
       </>
@@ -25,4 +26,8 @@ export class ProfileInfo extends Component {
   }
 }
 
-export default ProfileInfo;
+const mapStateToProps = (state) => ({
+  user: state.user
+});
+
+export default connect(mapStateToProps)(ProfileInfo);

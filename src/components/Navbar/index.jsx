@@ -20,8 +20,8 @@ class Navbar extends Component {
   handleMenuMobile = () => {
     return !this.state.menu ? this.setState({ menu: true }) : this.setState({ menu: false });
   };
-  handleLinkSignIn = () => {
-    this.props.history.push("/login");
+  handleLinkSignUp = () => {
+    this.props.history.push("/register");
   };
   handleSearch = () => {
     this.setState({
@@ -63,11 +63,13 @@ class Navbar extends Component {
   handleDetailSearchMovie = (id) => {
     this.props.history.push(`/detail-movie/${id}`);
   };
+  handleLogout = () => {
+    localStorage.clear();
+    alert("Thank you!");
+    this.props.history.push("/login");
+  };
   render() {
     const token = localStorage.getItem("token");
-    console.log(this.state.movies);
-    console.log(this.state.search);
-    console.log(this.state.message);
     return (
       <>
         <header>
@@ -155,15 +157,18 @@ class Navbar extends Component {
                     onClick={this.handleProfile}
                   />
                 ) : (
-                  <button className="button__signup--homepage" onClick={this.handleLinkSignIn}>
-                    Sign In
+                  <button className="button__signup--homepage" onClick={this.handleLinkSignUp}>
+                    Sign Up
                   </button>
                 )}
               </div>
               {this.state.show ? (
-                <Link to="/logout" className="text-decoration-none text-dark fw-bold">
+                <button
+                  onClick={this.handleLogout}
+                  className="text-decoration-none text-dark fw-bold"
+                >
                   logout
-                </Link>
+                </button>
               ) : null}
             </div>
           </nav>

@@ -16,27 +16,7 @@
 .banner_tickitz__title--header {
   font-size: 120px;
 }
-.banner_tickitz__title--intro {
-  color: #ffffff;
-  opacity: 0.8;
-}
-.form__parent {
-  padding: 50px;
-}
-.form__child__title {
-  font-size: 3rem;
-  font-weight: bold;
-}
-.form__child__desc {
-  color: #aaaaaa;
-  font-size: 18px;
-}
 
-.forgot-password__title {
-  color: #5f2eea;
-  font-weight: bold;
-  text-decoration: underline;
-}
 .navigation__homepage {
   padding: 20px 74px;
   display: flex;

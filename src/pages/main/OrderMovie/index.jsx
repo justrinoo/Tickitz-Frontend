@@ -8,6 +8,8 @@ import NumberSeats from "../../../components/NumberSeats";
 import axios from "../../../utils/axios";
 import ArrowDown from "../../../assets/img/Arrow-Down.svg";
 import ArrowRight from "../../../assets/img/Arrow-Right.svg";
+import Navbar from "../../../components/Navbar";
+import Footer from "../../../components/Footer";
 export class OrderMovie extends Component {
   constructor(props) {
     super(props);
@@ -119,8 +121,10 @@ export class OrderMovie extends Component {
     for (let i = 8; i <= 14; i++) {
       rightNumber.push(i);
     }
+
     return (
       <>
+        <Navbar />
         {/* SubMenu */}
         <div className="subnav__header">
           <p>{this.state.movieName}</p>
@@ -246,6 +250,7 @@ export class OrderMovie extends Component {
             </div>
           </section>
         </main>
+        <Footer />
         {/* <!-- End --> */}
       </>
     );

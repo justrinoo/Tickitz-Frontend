@@ -31,6 +31,23 @@
   - get detail order movie
   - Handling Order
 
+- Redux
+
+- Movie
+  - Get Movie
+  - Get Detail Movie
+  - Post Movie
+  - Update movie
+  - Delete movie
+
+-Schedule
+
+- Get Schedule
+- Get Detail Schedule
+- Post Schedule
+- Update Schedule
+- Delete Schedule
+
 ### Question One on One DailyStandUp
 
 - Pagination

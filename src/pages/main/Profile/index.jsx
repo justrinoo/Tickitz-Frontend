@@ -7,11 +7,12 @@ import UserInformation from "../../../components/UserInformation";
 import UserPrivacy from "../../../components/UserPrivacy";
 import axios from "../../../utils/axios";
 import OrderHistory from "../../../components/OrderHistory/order";
+import { connect } from "react-redux";
+import { GetUser } from "../../../store-livecode/actions/user";
 export class Profile extends Component {
   constructor() {
     super();
     this.state = {
-      users: [],
       menu: false,
       isError: true,
       isActive: true,
@@ -23,19 +24,23 @@ export class Profile extends Component {
   };
 
   getUserInformation = () => {
-    axios
-      .get("user")
-      .then((response) => {
-        this.setState({
-          users: response.data.data[0]
-        });
-      })
-      .catch((error) => {
-        this.setState({
-          isError: true,
-          message: error.response.data.message
-        });
-      });
+    this.props
+      .GetUser()
+      .then((response) => console.log(response))
+      .catch((error) => console.log(error.response));
+    // axios
+    //   .get("user")
+    //   .then((response) => {
+    //     this.setState({
+    //       users: response.data.data[0]
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     this.setState({
+    //       isError: true,
+    //       message: error.response.data.message
+    //     });
+    //   });
   };
   handleMenuProfile = (e) => {
     if (e.target.textContent === "Account Settings") {
@@ -51,8 +56,6 @@ export class Profile extends Component {
     }
   };
   render() {
-    const { users } = this.state;
-
     return (
       <>
         <Navbar />
@@ -80,7 +83,7 @@ export class Profile extends Component {
         </header>
         <section className="profile">
           <section className="profile__column">
-            <ProfileInformation data={users} />
+            <ProfileInformation />
             <section className="profile__column-settings">
               <div className="profile__column-settings-navigation">
                 <button
@@ -106,7 +109,7 @@ export class Profile extends Component {
               </div>
               {!this.state.menu ? (
                 <>
-                  <UserInformation data={users} />
+                  <UserInformation />
                   <UserPrivacy />
                 </>
               ) : (
@@ -123,4 +126,8 @@ export class Profile extends Component {
   }
 }
 
-export default Profile;
+const mapDispatchToProps = {
+  GetUser
+};
+
+export default connect(null, mapDispatchToProps)(Profile);

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "../../../utils/axios";
-
+import { connect } from "react-redux";
+import { login } from "../../../store-livecode/actions/auth";
 export class Login extends Component {
   constructor() {
     super();
@@ -29,36 +30,23 @@ export class Login extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post("auth/login", this.state.form)
-      .then((response) => {
-        // console.log(response.data.data.token);
-        // console.log(response.data.data.token);
-        localStorage.setItem("token", response.data.data.token);
-        this.props.history.push("/basic-react");
-      })
-      .catch((error) => {
-        this.setState({
-          isError: true,
-          message: error.response.data.message
-        });
-      })
-      .finally(() => {
-        setTimeout(() => {
-          this.setState({
-            isError: false,
-            message: ""
-          });
-        }, 2000);
-      });
+    this.props.login(this.state.form).then((response) => {
+      // REDUX //
+      // console.log(this.props.auth);
+      // console.log(response.value.data.data.token);
+      const token = response.value.data.data.token;
+      localStorage.setItem("token", token);
+      this.props.history.push("/basic-home");
+    });
   };
   render() {
+    const { isError, message } = this.props.auth;
     return (
       <>
         <div className="container text-center">
           <h2>Login Page</h2>
           <hr />
-          {this.state.isError && <div className="alert alert-danger">{this.state.message}</div>}
+          {isError && <div className="alert alert-danger">{message}</div>}
           <form onSubmit={this.handleSubmit}>
             <input
               type="email"
@@ -78,7 +66,7 @@ export class Login extends Component {
               Reset
             </button>
             <button type="submit" className="btn btn-outline-primary">
-              Submit
+              {isError ? "Loading..." : "Submit"}
             </button>
           </form>
         </div>
@@ -87,4 +75,12 @@ export class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToProps = (state) => ({
+  auth: state.auth
+});
+
+const mapDispatchToProps = {
+  login
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

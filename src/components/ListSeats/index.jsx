@@ -24,6 +24,7 @@ export class ListSeats extends Component {
   };
   render() {
     const { alphabetSeat, handleSelectSeats, soldSeats, selectedSeats } = this.props;
+    console.log("seat sold=>", soldSeats);
     return (
       <>
         <div className="seat">

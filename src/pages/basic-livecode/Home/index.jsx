@@ -9,6 +9,17 @@ export class BasicHome extends Component {
     super();
     this.state = {
       data: [],
+      form: {
+        title: "",
+        category: "",
+        releaseDate: "",
+        durationHour: "",
+        durationMinute: "",
+        directedBy: "",
+        synopsis: "",
+        casts: "",
+        image: null
+      },
       page: 1,
       limit: 3,
       pageInfo: {}
@@ -54,14 +65,130 @@ export class BasicHome extends Component {
     // console.log(data);
   };
 
+  handleInputMovie = (e) => {
+    this.setState({
+      form: {
+        ...this.state.form,
+        [e.target.name]: e.target.value
+      }
+    });
+  };
+
+  handleSubmitMovie = (event) => {
+    event.preventDefault();
+    // console.log(this.state.form);
+    const formData = new FormData();
+    // formData.append('title',this.state.form.title)
+    // using loop
+    for (const data in this.state.form) {
+      formData.append(data, this.state.form[data]);
+      // console.log(this.state.form[data]);
+    }
+
+    // untuk mengecek data di formData
+    for (const pair of formData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
+    }
+
+    console.log(formData);
+    // axios.post("movie", formData);
+  };
+
+  setUpdate = () => {
+    console.log("setupdate");
+  };
+
+  handleUpdate = () => {
+    console.log("handleupdate");
+  };
+
+  handleDelete = () => {
+    console.log("handledelete");
+  };
+
+  handleChangeFile = (event) => {
+    console.log(event);
+    this.setState({
+      form: {
+        ...this.state.form,
+        [event.target.name]: event.target.files[0]
+      }
+    });
+  };
+
   render() {
-    console.log("Data Baru", this.state.data);
     const { data } = this.state;
     return (
       <>
         <div className="container text-center">
           <h1>Home Page</h1>
           <Navbar />
+          <hr />
+          <form onSubmit={this.handleSubmitMovie}>
+            <div>
+              <label style={{ display: "block" }} htmlFor="title">
+                Title
+              </label>
+              <input type="text" name="title" onChange={(event) => this.handleInputMovie(event)} />
+              <label style={{ display: "block" }} htmlFor="category">
+                Category
+              </label>
+              <input
+                type="text"
+                name="category"
+                onChange={(event) => this.handleInputMovie(event)}
+              />
+              <label style={{ display: "block" }} htmlFor="releaseDate">
+                Release Date
+              </label>
+              <input
+                type="date"
+                name="releaseDate"
+                onChange={(event) => this.handleInputMovie(event)}
+              />
+              <label style={{ display: "block" }} htmlFor="durationHour">
+                Duration Hour
+              </label>
+              <input
+                type="text"
+                name="durationHour"
+                onChange={(event) => this.handleInputMovie(event)}
+              />
+              <label style={{ display: "block" }} htmlFor="durationMinute">
+                Duration Minute
+              </label>
+              <input
+                type="text"
+                name="durationMinute"
+                onChange={(event) => this.handleInputMovie(event)}
+              />
+              <label style={{ display: "block" }} htmlFor="synopsis">
+                Synopsis
+              </label>
+              <input
+                type="text"
+                name="synopsis"
+                onChange={(event) => this.handleInputMovie(event)}
+              />
+              <label style={{ display: "block" }} htmlFor="directedBy">
+                Directed By
+              </label>
+              <input
+                type="text"
+                name="directedBy"
+                onChange={(event) => this.handleInputMovie(event)}
+              />
+              <label style={{ display: "block" }} htmlFor="casts">
+                Casts
+              </label>
+              <input type="text" name="casts" onChange={(event) => this.handleInputMovie(event)} />
+              <label style={{ display: "block" }} htmlFor="image">
+                Image
+              </label>
+              <input type="file" name="image" onChange={(e) => this.handleChangeFile(e)} />
+            </div>
+            <button type="submit">Submit</button>
+          </form>
           <hr />
           <div className="row">
             {data.map((item) => (
