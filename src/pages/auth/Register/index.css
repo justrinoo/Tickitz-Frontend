@@ -16,7 +16,7 @@
   padding: 35px 99px;
 }
 .register__image {
-  height: 721px;
+  height: 100%;
   width: 100%;
   object-fit: cover;
 }
@@ -124,13 +124,16 @@
 .form__auth-checkbox {
   margin: 30px 20px;
 }
+label {
+  display: block;
+}
 .form__auth-checkbox label {
   color: #696f79;
   font-weight: normal;
   font-size: 18px;
 }
 .form__auth {
-  margin: 30px 20px;
+  margin: 15px 20px;
 }
 .register__link-to {
   color: #5f2eea;

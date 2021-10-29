@@ -119,7 +119,7 @@ label {
   padding: 52px;
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-between;
   flex-wrap: wrap;
 }
 .manage__movie-list-card-body {

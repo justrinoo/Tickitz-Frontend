@@ -8,7 +8,7 @@ import UserPrivacy from "../../../components/UserPrivacy";
 import axios from "../../../utils/axios";
 import OrderHistory from "../../../components/OrderHistory/order";
 import { connect } from "react-redux";
-import { GetUser } from "../../../store-livecode/actions/user";
+import { GetUser } from "../../../store/actions/user";
 export class Profile extends Component {
   constructor() {
     super();
@@ -24,23 +24,7 @@ export class Profile extends Component {
   };
 
   getUserInformation = () => {
-    this.props
-      .GetUser()
-      .then((response) => console.log(response))
-      .catch((error) => console.log(error.response));
-    // axios
-    //   .get("user")
-    //   .then((response) => {
-    //     this.setState({
-    //       users: response.data.data[0]
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     this.setState({
-    //       isError: true,
-    //       message: error.response.data.message
-    //     });
-    //   });
+    this.props.GetUser();
   };
   handleMenuProfile = (e) => {
     if (e.target.textContent === "Account Settings") {

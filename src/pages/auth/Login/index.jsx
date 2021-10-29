@@ -8,7 +8,7 @@ import FacebookIcon from "../../../assets/img/Facebook-icon.svg";
 import { Link } from "react-router-dom";
 import axios from "../../../utils/axios";
 import { Toast } from "react-bootstrap";
-import { GetUser } from "../../../store-livecode/actions/user";
+import { GetUser } from "../../../store/actions/user";
 import { connect } from "react-redux";
 
 class Login extends Component {

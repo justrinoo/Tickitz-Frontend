@@ -1,0 +1,139 @@
+.manage__schedule {
+  padding: 50px 92px;
+  background-color: #f5f6f8;
+}
+.manage__schedule-form-card {
+  background-color: #ffffff;
+  border-radius: 24px;
+  padding: 42px;
+  display: flex;
+}
+.manage__schedule-form-card-body {
+  padding: 24px;
+  width: 45%;
+  background: #ffffff;
+  border: 0.5px solid #dedede;
+  border-radius: 16px;
+}
+.manage__schedule-form-card-row {
+  padding: 0px 32px;
+}
+.manage__schedule-form-card-input {
+  width: 100%;
+  background: #fcfdfe;
+  border: 1px solid #dedede;
+  border-radius: 16px;
+  padding: 16px 20px;
+  color: #4e4b66;
+  font-size: 16px;
+}
+.manage__shcedule-form-card-image {
+  width: 100px;
+  margin: 0px 20px;
+}
+.manage__schedule-form-card-premiere {
+  margin: 20px 0px;
+}
+
+.manage__schedule-form-card-time-button {
+  border: 1px solid #5f2eea;
+  background-color: transparent;
+  padding: 0px 8px;
+  border-radius: 8px;
+  margin: 0px 20px 0px 0px;
+}
+
+.manage__schedule-form-card-time-select-time {
+  color: #4e4b66;
+  font-weight: 600;
+  border: none;
+  background-color: transparent;
+}
+.manage__schedule-form-title {
+  color: #000000;
+  font-weight: bold;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+.manage__schedule-list {
+  margin: 40px 0px;
+  background-color: #ffffff;
+  border-radius: 6px;
+  padding: 32px;
+  display: flex;
+  justify-content: space-around;
+}
+.manage__schedule-list-card {
+  background-color: #ffffff;
+  border: 0.5px solid #dedede;
+  border-radius: 8px;
+  padding: 24px;
+}
+.manage__schedule-list-card-header {
+  display: flex;
+}
+.manage__schedule-list-card-image {
+  width: 100%;
+  margin: 10px 5px;
+  object-fit: contain;
+}
+.manage__schedule-list-card-premiere {
+  padding: 0px 0px 0px 20px;
+}
+.manage__schedule-list-card-premiere span:nth-child(1) {
+  color: #000000;
+  font-weight: 600;
+  font-size: 24px;
+}
+.manage__schedule-list-card-premiere span:nth-child(2) {
+  color: #6e7191;
+  font-weight: 300;
+  font-size: 12px;
+}
+.manage__schedule-list-card-body {
+  padding: 10px;
+}
+.manage__movie-list-card-time-title {
+  color: #4e4b66;
+  font-weight: 600;
+}
+.manage__movie-list-card-time-title-not-active {
+  color: #a0a3bd;
+  font-weight: 600;
+}
+.manage__schedule-list-card-price {
+  display: flex;
+  margin: 10px 0px;
+  padding: 6px;
+  justify-content: space-between;
+}
+.manage__schedule-list-card-price span:nth-child(1) {
+  color: #6b6b6b;
+  font-size: 16px;
+}
+.manage__schedule-list-card-price span:nth-child(2) {
+  color: #000000;
+  font-weight: bold;
+  font-size: 16px;
+}
+.manage__schedule-list-card-parent {
+  display: flex;
+  margin: 30px 0px 0px 0px;
+  justify-content: space-between;
+}
+.manage__schedule-list-card-button-active {
+  border: 1px solid #5f2eea;
+  border-radius: 4px;
+  color: #5f2eea;
+  width: 50%;
+  background-color: transparent;
+  padding: 3px;
+}
+.manage__schedule-list-card-button {
+  border: 1px solid #ed2e7e;
+  border-radius: 4px;
+  color: #ed2e7e;
+  width: 48%;
+  background-color: transparent;
+  padding: 3px;
+}

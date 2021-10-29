@@ -27,7 +27,7 @@ import BasicMovieDetail from "./pages/basic-livecode/DetailMovie";
 import CounterClass from "./pages/basic-livecode/Counter/counter.class";
 import CounterFunc from "./pages/basic-livecode/Counter/counter.function";
 import { Provider } from "react-redux";
-import store from "./store-livecode/store";
+import store from "./store/store";
 class App extends Component {
   render() {
     return (

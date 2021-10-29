@@ -6,4 +6,11 @@ export const login = (data) => {
   };
 };
 
+export const register = (data) => {
+  return {
+    type: "REGISTER",
+    payload: axios.post("auth/register", data)
+  };
+};
+
 // REGISTER,LOGOUT,FORGOT PASSWORD

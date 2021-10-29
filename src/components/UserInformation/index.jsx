@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "../../utils/axios";
 import { connect } from "react-redux";
-import { GetUser } from "../../store-livecode/actions/user";
+import { GetUser } from "../../store/actions/user";
 export class UserInformation extends Component {
   constructor(props) {
     super(props);

@@ -2,7 +2,7 @@
 
 #### Features
 
-- Login
+- Authentication
 
   - Post Login
   - Validasi

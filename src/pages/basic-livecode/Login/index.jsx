@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "../../../utils/axios";
 import { connect } from "react-redux";
-import { login } from "../../../store-livecode/actions/auth";
+import { login } from "../../../store/actions/auth";
 export class Login extends Component {
   constructor() {
     super();

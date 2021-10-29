@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Container, Button } from "react-bootstrap";
 import { connect } from "react-redux";
-import { increaseCounter } from "../../../store-livecode/actions/counter";
+// import { increaseCounter } from "../../../store-livecode/actions/counter";
 export class CounterClass extends Component {
   constructor() {
     super();
@@ -62,12 +62,14 @@ export class CounterClass extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  counter: state.counter
-});
+// const mapStateToProps = (state) => ({
+//   counter: state.counter
+// });
 
-const mapDispatchToProps = {
-  increaseCounter
-};
+// const mapDispatchToProps = {
+//   increaseCounter
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CounterClass);
+// export default connect(mapStateToProps, mapDispatchToProps)(CounterClass);
+
+export default CounterClass;
