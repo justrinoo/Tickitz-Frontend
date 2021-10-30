@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import ManageMovie from "../../assets/img/movies3.png";
 import { createMovie, getAllMovie } from "../../store/actions/movie";
@@ -22,7 +22,6 @@ function FormMovie(props) {
   const handleManageMovie = (event) => {
     event.preventDefault();
     const formImage = new FormData();
-
     const setDataMovie = {
       title,
       category,
@@ -38,20 +37,6 @@ function FormMovie(props) {
       formImage.append(movies, setDataMovie[movies]);
     }
 
-    if (
-      title === "" ||
-      category === "" ||
-      director === "" ||
-      casts === "" ||
-      releaseDate === "" ||
-      durationHour === "" ||
-      durationMinute === "" ||
-      synopsis === "" ||
-      image === ""
-    ) {
-      setError(true);
-      return false;
-    }
     if (
       title === "" ||
       category === "" ||
@@ -82,6 +67,7 @@ function FormMovie(props) {
     }
   };
   console.log(props);
+
   return (
     <>
       <section className="manage__movie-form">

@@ -6,9 +6,10 @@ import UpCommingMovies from "../../../components/Upcomming-Movies";
 import JoinTickitz from "../../../components/JoinTickitz";
 import Navbar from "../../../components/Navbar";
 import Footer from "../../../components/Footer";
-import axios from "../../../utils/axios";
 class Home extends Component {
   render() {
+    console.log(this.props);
+
     return (
       <>
         <Navbar />

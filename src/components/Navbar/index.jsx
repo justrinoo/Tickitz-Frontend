@@ -14,7 +14,8 @@ class Navbar extends Component {
       search: "",
       movies: [],
       isError: false,
-      message: ""
+      message: "",
+      role: localStorage.getItem("role")
     };
   }
   handleMenuMobile = () => {
@@ -83,15 +84,31 @@ class Navbar extends Component {
                     alt="Logo"
                   />
                 </Link>
-                <Link to="/" className="d-none d-md-inline-block mx-5">
-                  Home
-                </Link>
-                <Link to="/payment" className="mx-4 d-none d-md-inline-block">
-                  Payment
-                </Link>
-                <Link to="/profile" className="mx-4 d-none d-md-inline-block">
-                  Profile
-                </Link>
+                {this.state.role !== "admin" ? (
+                  <>
+                    <Link to="/" className="d-none d-md-inline-block mx-5">
+                      Home
+                    </Link>
+                    <Link to="/payment" className="mx-4 d-none d-md-inline-block">
+                      Payment
+                    </Link>
+                    <Link to="/profile" className="mx-4 d-none d-md-inline-block">
+                      Profile
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/admin/dashboard" className="d-none d-md-inline-block mx-5">
+                      Dashboard
+                    </Link>
+                    <Link to="/admin/manage-movie" className="mx-4 d-none d-md-inline-block">
+                      Manage Movie
+                    </Link>
+                    <Link to="/admin/manage-schedule" className="mx-4 d-none d-md-inline-block">
+                      Manage Schedule
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
             <div className="navigation__homepage__parent">

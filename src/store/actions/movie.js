@@ -13,3 +13,17 @@ export const getAllMovie = (page, limit) => {
     payload: axios.get(`movie?searchName=&page=${page}&limit=${limit}`)
   };
 };
+
+export const updateMovie = (data, id) => {
+  return {
+    type: "UPDATEMOVIE",
+    payload: axios.patch(`movie/${id}`, data)
+  };
+};
+
+export const deleteMovie = (id) => {
+  return {
+    type: "DELETEMOVIE",
+    payload: axios.delete(`movie/${id}`)
+  };
+};

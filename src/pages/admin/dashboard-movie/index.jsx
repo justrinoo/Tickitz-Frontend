@@ -1,5 +1,6 @@
 import React from "react";
-import { ChartMovie } from "../../../components/Chart";
+import ChartMovie from "../../../components/Chart";
+import DashboardFilter from "../../../components/DashboardFilter";
 import Footer from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";
 import "./index.css";
@@ -15,27 +16,7 @@ export default function Dashboard() {
         </section>
         <section className="dashboard__filter">
           <h3>Filtered</h3>
-          <div className="dashboard__filter-container">
-            <div className="mb-4">
-              <select className="dashboard__filter-movie">
-                <option hidden>Select Movie</option>
-              </select>
-            </div>
-            <div className="mb-4">
-              <select className="dashboard__filter-premiere">
-                <option hidden>Select Premiere</option>
-              </select>
-            </div>
-            <div className="mb-4">
-              <select className="dashboard__filter-location">
-                <option hidden>Select Location</option>
-              </select>
-            </div>
-            <div className="mb-4">
-              <button className="dashboard__filter-button-filter">Filter</button>
-              <button className="dashboard__filter-button-reset">Reset</button>
-            </div>
-          </div>
+          <DashboardFilter />
         </section>
       </main>
       <Footer />

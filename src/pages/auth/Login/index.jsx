@@ -9,6 +9,8 @@ import { Link } from "react-router-dom";
 import axios from "../../../utils/axios";
 import { Toast } from "react-bootstrap";
 import { GetUser } from "../../../store/actions/user";
+import { withRouter } from "react-router-dom";
+
 import { connect } from "react-redux";
 
 class Login extends Component {
@@ -39,7 +41,12 @@ class Login extends Component {
     axios
       .post("auth/login", this.state.form_input)
       .then((response) => {
-        this.props.GetUser();
+        this.props.GetUser().then((response) => {
+          localStorage.setItem("role", response.value.data.data[0].role);
+          if (response.value.data.data[0].role === "admin") {
+            this.props.history.push("/admin/dashboard");
+          }
+        });
         const token = response.data.data.token;
         const userId = response.data.data.id;
         localStorage.setItem("user_id", userId);
@@ -167,8 +174,12 @@ class Login extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  user: state.user
+});
+
 const mapDispatchToProps = {
   GetUser
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));

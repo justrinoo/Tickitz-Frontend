@@ -1,7 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Line } from "react-chartjs-2";
-export const ChartMovie = () => {
-  const labels = ["January", "February", "March", "April", "May", "June"];
+import { connect } from "react-redux";
+import { getDashboard } from "../../store/actions/user";
+const ChartMovie = (props) => {
+  let setDataMonth = [];
+  let setDataCount = [];
+  const statistic = JSON.parse(localStorage.getItem("dataStatistic"));
+  if (!statistic) {
+    null;
+  } else {
+    statistic.map((value) => {
+      const bulan = value.month;
+      const total = value.total;
+      const setNewDataCount = total.split(" ");
+      const setNewDataMonth = bulan.split(" ");
+      setDataCount.push(setNewDataCount.join(""));
+      setDataMonth.push(setNewDataMonth.join(""));
+    });
+  }
+  const labels = setDataMonth;
+  const totalCount = setDataCount;
   const data = {
     labels: labels,
     datasets: [
@@ -9,7 +27,7 @@ export const ChartMovie = () => {
         label: "Statistic Movie",
         backgroundColor: "#5F2EEA",
         borderColor: "#5F2EEA",
-        data: [0, 10, 5, 45, 20, 30, 45]
+        data: totalCount.length > 0 ? totalCount : null
       }
     ]
   };
@@ -20,9 +38,16 @@ export const ChartMovie = () => {
       responsive: true
     }
   };
+
   return (
     <>
       <Line data={data} options={config} />
     </>
   );
 };
+
+const mapDispatchToProps = {
+  getDashboard
+};
+
+export default connect(null, mapDispatchToProps)(ChartMovie);

@@ -1,7 +1,9 @@
 const initialState = {
   movies: [],
+  pageInfo: {},
   isError: false,
   isLoading: false,
+  isShow: false,
   message: ""
 };
 
@@ -36,7 +38,8 @@ export default function movie(state = initialState, action) {
         ...state,
         isError: false,
         isLoading: false,
-        message: ""
+        message: "",
+        pageInfo: {}
       };
     }
     case "GETALLMOVIE_FULFILLED": {
@@ -45,10 +48,59 @@ export default function movie(state = initialState, action) {
         isError: false,
         isLoading: false,
         movies: action.payload.data.data,
-        message: action.payload.data.message
+        message: action.payload.data.message,
+        pageInfo: action.payload.data.pageInfo
       };
     }
     case "GETALLMOVIE_REJECTED": {
+      return {
+        ...state,
+        isError: true,
+        isLoading: true,
+        message: action.payload.data.message
+      };
+    }
+    case "UPDATEMOVIE_PENDING": {
+      return {
+        ...state,
+        isError: false,
+        isLoading: false,
+        message: ""
+      };
+    }
+    case "UPDATEMOVIE_FULFILLED": {
+      return {
+        ...state,
+        isError: false,
+        isLoading: false,
+        message: action.payload.data.message
+      };
+    }
+    case "UPDATEMOVIE_PENDING": {
+      return {
+        ...state,
+        isError: true,
+        isLoading: true,
+        message: action.payload.data.message
+      };
+    }
+    case "DELETEMOVIE_PENDING": {
+      return {
+        ...state,
+        isError: false,
+        isLoading: false,
+        message: ""
+      };
+    }
+    case "DELETEMOVIE_FULFILLED": {
+      return {
+        ...state,
+        isError: false,
+        isLoading: false,
+        message: action.payload.data.message
+      };
+    }
+    case "DELETEMOVIE_REJECTED": {
       return {
         ...state,
         isError: true,

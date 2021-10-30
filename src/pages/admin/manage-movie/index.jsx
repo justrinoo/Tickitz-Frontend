@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Footer from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";
 import Pagination from "react-paginate";
 import "./index.css";
 import FormMovie from "../../../components/FormMovie";
 import DataListMovie from "../../../components/Data-MovieList";
-function ManageMovie() {
+import { withRouter } from "react-router-dom";
+
+function ManageMovie(props) {
+  useEffect(() => {
+    const role = localStorage.getItem("role");
+    if (role !== "admin") {
+      props.history.push("/");
+    }
+  }, []);
   return (
     <>
       <Navbar />
@@ -31,4 +39,4 @@ function ManageMovie() {
   );
 }
 
-export default ManageMovie;
+export default withRouter(ManageMovie);

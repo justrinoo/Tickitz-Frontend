@@ -18,7 +18,7 @@ class ScheduleMovie extends Component {
       showSchedule: false,
       selectedTime: true,
       page: 1,
-      limit: 3,
+      limit: 1,
       pageInfo: []
     };
   }
@@ -109,7 +109,6 @@ class ScheduleMovie extends Component {
   render() {
     const filterLocation = this.state.schedules.map((value) => value.location).pop();
     const location = filterLocation === undefined ? null : filterLocation;
-    console.log(this.state.pageInfo);
     return (
       <>
         <section className="detail__schedule">
@@ -140,13 +139,16 @@ class ScheduleMovie extends Component {
             <>
               {this.state.schedules.length > 0 ? (
                 this.state.schedules.map((schedule) => {
-                  // const filterTime = schedule.time;
-                  // const newTime = filterTime.filter((value) => value === this.state.timeSchedule);
-                  // const toStringTime = newTime.toString();
+                  const filterTime = schedule.time;
+                  const newTime = filterTime.filter((value) => value === this.state.timeSchedule);
+                  const toStringTime = newTime.toString();
                   return schedule.movie_id !== parseInt(this.state.movieId) ? (
                     <p className="fw-bold fs-2">Error</p>
                   ) : (
-                    <div key={schedule.id_schedule}>
+                    <div
+                      key={schedule.id_schedule}
+                      className={toStringTime === this.state.timeSchedule ? null : "d-none"}
+                    >
                       <div className="detail__list_schedule-card position-relative">
                         <div className="detail__list_schedule-card-body">
                           <img
