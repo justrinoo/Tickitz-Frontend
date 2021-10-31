@@ -12,8 +12,8 @@ function FormMovie(props) {
   const [durationMinute, setDurationMinute] = useState("");
   const [synopsis, setSynopsis] = useState("");
   const [image, setImage] = useState(null);
-  const [isLoading, setLoading] = useState(props.movie.isLoading);
   const [isError, setError] = useState(props.movie.isError);
+  // const [isLoading, setLoading] = useState(props.movie.isLoading);
 
   const changeFileImage = (event) => {
     setImage(event.target.files[0]);
@@ -49,25 +49,24 @@ function FormMovie(props) {
       image === ""
     ) {
       setError(true);
+      event.target.reset();
     } else {
-      setTitle("");
-      setCategory("");
-      setDirector("");
-      setCasts("");
-      setReleaseDate("");
-      setDurationHour("");
-      setDurationMinute("");
-      setSynopsis("");
-      setImage("");
       props.createMovie(formImage).then(() => {
+        setTitle("");
+        setCategory("");
+        setDirector("");
+        setCasts("");
+        setReleaseDate("");
+        setDurationHour("");
+        setDurationMinute("");
+        setSynopsis("");
+        setImage("");
         event.target.reset();
         props.getAllMovie();
         setError(false);
       });
     }
   };
-  console.log(props);
-
   return (
     <>
       <section className="manage__movie-form">

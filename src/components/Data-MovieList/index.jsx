@@ -8,6 +8,8 @@ import {
   searchMovie,
   searchSort
 } from "../../store/actions/movie";
+import Pagination from "react-paginate";
+
 function DataListMovie(props) {
   const [dataMovies, setMovies] = useState(props.movie.movies);
   const [title, setTitle] = useState("");
@@ -20,13 +22,18 @@ function DataListMovie(props) {
   const [synopsis, setSynopsis] = useState("");
   const [image, setImage] = useState(null);
   const [isShow, setShow] = useState({});
-  const [page] = useState(1);
+  const [page, setPage] = useState(1);
   const [limit] = useState(8);
+  const [pageInfo] = useState(props.movie.pageInfo.totalPage);
+
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
   // const [isError, setError] = useState(props.movie.isError);
   const getAllMovieData = () => {
-    props.getAllMovie(page, limit);
+    props
+      .getAllMovie(page, limit)
+      .then((response) => setMovies(response.value.data.data))
+      .catch((error) => new Error(error));
   };
 
   const handleChangeUpdate = (id) => {
@@ -34,9 +41,7 @@ function DataListMovie(props) {
   };
 
   const handleImage = (e) => {
-    console.log(event.target.files);
     setImage(image, e.target.files[0]);
-    console.log(image);
   };
 
   const handleUpdateMovie = (id) => {
@@ -61,45 +66,45 @@ function DataListMovie(props) {
 
   const handleDeleteMovie = (id) => {
     props.deleteMovie(id).then(() => {
-      props.getAllMovie();
+      props.getAllMovie(page, limit).then((response) => {
+        setMovies(response.value.data.data);
+      });
     });
   };
 
   const handleSearch = (event) => {
-    const searchMovie = event.target.value;
-    if (searchMovie === "") {
-      props.getAllMovie().then((response) => {
+    const searchValue = event.target.value;
+    props
+      .searchMovie(search)
+      .then((response) => {
         setMovies(response.value.data.data);
-      });
-    } else {
-      props
-        .searchMovie(search)
-        .then((response) => {
-          setMovies(response.value.data.data);
-          props.getAllMovie();
-        })
-        .catch(() => {
-          alert("movie tidak ditemukan!");
-        });
-      setSearch(searchMovie);
-    }
+      })
+      .catch((error) => new Error(error.message));
+    setSearch(searchValue);
   };
 
   const handleSort = (event) => {
-    let valueSort = event.target.value;
-    setSort(event.target.value);
+    // console.log(event.target.value);
+    const sortValue = event.target.value;
+    props
+      .searchSort(sort)
+      .then((response) => {
+        setMovies(response.value.data.data);
+      })
+      .catch((error) => new Error(error.message));
+    setSort(sortValue);
+  };
 
-    props.searchSort(valueSort).then((response) => {
-      setMovies(response.value.data.data);
-      props.getAllMovie();
-    });
+  const handleChangePagination = (event) => {
+    const countPage = event.selected + 1;
+    setPage(countPage, () => props.getAllMovie(page, limit));
   };
 
   useEffect(() => {
     getAllMovieData();
   }, [page, limit, search]);
 
-  console.log(sort);
+  console.log(props.movie);
   return (
     <>
       <section className="manage__movie-list">
@@ -111,8 +116,8 @@ function DataListMovie(props) {
             <div className="manage__movie-list-column">
               <select className="manage__movie-list-sort fw-bold" name="sort" onChange={handleSort}>
                 <option hidden>Sort</option>
-                <option value="ASC">ASCENDING</option>
-                <option value="DESC">DESCENDING</option>
+                <option value="ASC">Ascending</option>
+                <option value="DESC">Descending</option>
               </select>
               <input
                 type="text"
@@ -124,7 +129,7 @@ function DataListMovie(props) {
             </div>
           </div>
           <div className="manage__movie-list-card">
-            {dataMovies.length > 0 &&
+            {dataMovies.length > 0 ? (
               dataMovies.map((film) => (
                 <div className="manage__movie-list-card-body" key={film.id}>
                   {!isShow[film.id] ? (
@@ -218,8 +223,25 @@ function DataListMovie(props) {
                     </>
                   )}
                 </div>
-              ))}
+              ))
+            ) : (
+              <p>Coming Soon!</p>
+            )}
           </div>
+        </div>
+      </section>
+
+      <section className="manage__movie-pagination">
+        <div>
+          <Pagination
+            previousLabel={null}
+            nextLabel={null}
+            breakLabel={"..."}
+            pageCount={pageInfo}
+            onPageChange={handleChangePagination}
+            containerClassName={"schedule__pagination"}
+            activeClassName={"schedule__pagination-button"}
+          />
         </div>
       </section>
     </>
