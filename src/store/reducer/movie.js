@@ -49,7 +49,7 @@ export default function movie(state = initialState, action) {
         isLoading: false,
         movies: action.payload.data.data,
         message: action.payload.data.message,
-        pageInfo: action.payload.data.pageInfo
+        pageInfo: action.payload.data.pagination
       };
     }
     case "GETALLMOVIE_REJECTED": {
@@ -105,6 +105,56 @@ export default function movie(state = initialState, action) {
         ...state,
         isError: true,
         isLoading: true,
+        message: action.payload.data.message
+      };
+    }
+    case "SEARCHMOVIE_PENDING": {
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        message: ""
+      };
+    }
+    case "SEARCHMOVIE_FULFILLED": {
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        movies: action.payload.data.data,
+        message: action.payload.data.message
+      };
+    }
+    case "SEARCHMOVIE_REJECTED": {
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        message: action.payload.data.message
+      };
+    }
+    case "SORTMOVIE_PENDING": {
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        message: ""
+      };
+    }
+    case "SORTMOVIE_FULFILLED": {
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        movies: action.payload.data.data,
+        message: action.payload.data.message
+      };
+    }
+    case "SORTMOVIE_REJECTED": {
+      return {
+        ...state,
+        isLoading: true,
+        isError: true,
         message: action.payload.data.message
       };
     }

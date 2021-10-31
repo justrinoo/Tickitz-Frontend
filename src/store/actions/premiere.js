@@ -9,6 +9,13 @@ export const getAllPremiere = (page, limit) => {
 export const postPremiere = (data) => {
   return {
     type: "POSTPREMIERE",
-    payload: axios.get("schedule/create", data)
+    payload: axios.post("schedule/create", data)
+  };
+};
+
+export const deletePremiere = (id) => {
+  return {
+    type: "DELETEPREMIERE",
+    payload: axios.delete(`schedule/delete/${id}`)
   };
 };

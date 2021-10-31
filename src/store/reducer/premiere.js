@@ -13,8 +13,7 @@ export default function getAllPremiere(state = initialState, action) {
         ...state,
         isError: false,
         isLoading: false,
-        message: "",
-        pageInfo: {}
+        message: ""
       };
     }
     case "GETALLPREMIERE_FULFILLED": {
@@ -24,17 +23,15 @@ export default function getAllPremiere(state = initialState, action) {
         isLoading: false,
         premiere: action.payload.data.data,
         message: action.payload.data.message,
-        pageInfo: action.payload.data.pageInfo
+        pageInfo: action.payload.data.pagination
       };
     }
-    case "GETALLPREMIERE_FULFILLED": {
+    case "GETALLPREMIERE_REJECTED": {
       return {
         ...state,
         isError: true,
         isLoading: true,
-        premiere: [],
-        message: action.payload.data.message,
-        pageInfo: {}
+        message: ""
       };
     }
     case "POSTPREMIERE_PENDING": {
@@ -42,7 +39,7 @@ export default function getAllPremiere(state = initialState, action) {
         ...state,
         isError: false,
         isLoading: false,
-        message: action.payload.data.message
+        message: ""
       };
     }
     case "POSTPREMIERE_FULFILLED": {
@@ -58,6 +55,30 @@ export default function getAllPremiere(state = initialState, action) {
         ...state,
         isError: true,
         isLoading: true,
+        message: action.payload.data.message
+      };
+    }
+    case "DELETEPREMIERE_PENDING": {
+      return {
+        ...state,
+        isError: false,
+        isLoading: false,
+        message: ""
+      };
+    }
+    case "DELETEPREMIERE_FULFILLED": {
+      return {
+        ...state,
+        isError: false,
+        isLoading: false,
+        message: action.payload.data.message
+      };
+    }
+    case "DELETEPREMIERE_REJECTED": {
+      return {
+        ...state,
+        isError: true,
+        isLoading: false,
         message: action.payload.data.message
       };
     }

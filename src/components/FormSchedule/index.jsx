@@ -5,7 +5,7 @@ import Premier2 from "../../assets/img/Sponsor2.png";
 import Premier3 from "../../assets/img/Sponsor3.png";
 import Plus from "../../assets/img/plus.svg";
 import { connect } from "react-redux";
-import { postPremiere } from "../../store/actions/premiere";
+import { postPremiere, getAllPremiere } from "../../store/actions/premiere";
 import { getAllMovie } from "../../store/actions/movie";
 import axios from "../../utils/axios";
 class FormSchedule extends Component {
@@ -13,8 +13,13 @@ class FormSchedule extends Component {
     super(props);
     this.state = {
       dataMovies: props.movie,
-      dataLocation: props.movie,
+      dataPremiere: "",
+      dataLocation: [],
       selectTime: [],
+      isDisabled: false,
+      isActive: false,
+      isError: false,
+      message: "",
       form__schedule: {
         location: "",
         movieId: "",
@@ -33,21 +38,53 @@ class FormSchedule extends Component {
     const { movieId, location, price, dateStart, dateEnd, premiere, time } =
       this.state.form__schedule;
     const setDataPremiere = {
-      movieId,
+      movie_id: movieId,
       location,
       price,
       dateStart,
       dateEnd,
-      premiere,
+      premiere: this.state.dataPremiere,
       time: newTime.toString()
     };
-    console.log(setDataPremiere);
+    if (
+      movieId === "" &&
+      location === "" &&
+      price === "" &&
+      dateStart === "" &&
+      dateEnd === "" &&
+      premiere === "" &&
+      time === ""
+    ) {
+      alert("isi form yang kosong!");
+      this.setState({
+        isError: true,
+        message: "Silahkan isi form yang kosong!"
+      });
+      // alert("isi form yang kosong!");
+    } else {
+      this.props.postPremiere(setDataPremiere).then(() => {
+        this.props.getAllPremiere(1, 10);
+        this.setState({
+          form__schedule: {
+            location: "",
+            movieId: "",
+            price: "",
+            dateStart: "",
+            dateEnd: "",
+            premiere: "",
+            time: ""
+          }
+        });
+      });
+    }
   };
 
   getLocation = async () => {
     try {
       const response = await axios.get("https://dev.farizdotid.com/api/daerahindonesia/provinsi");
-      setDataLocation(response.data.provinsi);
+      this.setState({
+        dataLocation: response.data.provinsi
+      });
     } catch (error) {
       new Error(error.message);
     }
@@ -62,6 +99,17 @@ class FormSchedule extends Component {
   };
   getValueImage = (event) => {
     let value = event.target.alt;
+    if (value) {
+      this.setState({
+        isActive: true,
+        dataPremiere: value
+      });
+    } else {
+      this.setState({
+        isActive: false,
+        dataPremiere: null
+      });
+    }
   };
 
   getValueTime = (event) => {
@@ -69,8 +117,6 @@ class FormSchedule extends Component {
     this.setState({
       selectTime: [...this.state.selectTime, value]
     });
-
-    // console.log(value);
   };
 
   componentDidMount() {
@@ -84,6 +130,9 @@ class FormSchedule extends Component {
         <section className="manage__schedule-form">
           <h5 className="manage__schedule-form-title">Form Schedule</h5>
           <form onSubmit={this.handleSubmitPremiere}>
+            {this.state.isError ? (
+              <p className="text-end text-danger fw-bold">{this.state.message}</p>
+            ) : null}
             <div className="manage__schedule-form-card">
               <div className="manage__schedule-form-card-body">
                 <img src={ManageMovie} className="img-fluid" alt="Movies" />
@@ -124,7 +173,7 @@ class FormSchedule extends Component {
                       this.state.dataLocation.map((value) => {
                         return (
                           <>
-                            <option value={value.id} key={value.id}>
+                            <option value={value.nama} key={value.id}>
                               {value.nama}
                             </option>
                           </>
@@ -194,66 +243,76 @@ class FormSchedule extends Component {
                   <label htmlFor="time">Time</label>
                   <div className="row manage__schedule-form-card-time">
                     <div className="col-md-3">
-                      <button className="manage__schedule-form-card-time-button">
+                      <div className="manage__schedule-form-card-time-button">
                         <img src={Plus} className="img-fluid" alt="Plus" />
-                      </button>
+                      </div>
                     </div>
                     <div className="col-md-3">
-                      <button
+                      <div
                         onClick={this.getValueTime}
                         className="manage__schedule-form-card-time-select-time"
                       >
                         08:30
-                      </button>
+                      </div>
                     </div>
                     <div className="col-md-3">
-                      <button
+                      <div
                         onClick={this.getValueTime}
                         className="manage__schedule-form-card-time-select-time"
                       >
                         10:30
-                      </button>
+                      </div>
                     </div>
                     <div className="col-md-3">
-                      <button
+                      <div
                         onClick={this.getValueTime}
                         className="manage__schedule-form-card-time-select-time"
                       >
                         12:00
-                      </button>
+                      </div>
                     </div>
                     <div className="col-md-3 mt-2">
-                      <button
+                      <div
                         onClick={this.getValueTime}
                         className="manage__schedule-form-card-time-select-time"
                       >
                         04:30
-                      </button>
+                      </div>
                     </div>
                     <div className="col-md-3 mt-2">
-                      <button
+                      <div
                         onClick={this.getValueTime}
                         className="manage__schedule-form-card-time-select-time"
                       >
                         07:00
-                      </button>
+                      </div>
                     </div>
                     <div className="col-md-3 mt-2">
-                      <button
+                      <div
                         onClick={this.getValueTime}
                         className="manage__schedule-form-card-time-select-time"
                       >
                         08:30
-                      </button>
+                      </div>
                     </div>
                     <div className="col-md-3 mt-2">
-                      <button
+                      <div
                         onClick={this.getValueTime}
                         className="manage__schedule-form-card-time-select-time"
                       >
                         09:30
-                      </button>
+                      </div>
                     </div>
+                  </div>
+                  <div className="d-flex justify-content-center align-items-center mt-4">
+                    <button className="manage__schedule-form-card-button-reset mx-1">Reset</button>
+                    <button
+                      type="submit"
+                      className="manage__schedule-form-card-button-submit manage__schedule-form-card-button-disabled"
+                      disabled={this.state.isDisabled}
+                    >
+                      Submit
+                    </button>
                   </div>
                 </div>
               </div>
@@ -271,7 +330,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   postPremiere,
-  getAllMovie
+  getAllMovie,
+  getAllPremiere
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormSchedule);

@@ -1,5 +1,19 @@
 import axios from "../../utils/axios";
 
+export const searchSort = (sort) => {
+  return {
+    type: "SORTMOVIE",
+    payload: axios.get(`movie?sort=${sort}`)
+  };
+};
+
+export const searchMovie = (search) => {
+  return {
+    type: "SEARCHMOVIE",
+    payload: axios.get(`movie?searchName=${search}`)
+  };
+};
+
 export const createMovie = (data) => {
   return {
     type: "POSTMOVIE",
