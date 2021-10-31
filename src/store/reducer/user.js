@@ -63,7 +63,7 @@ export default function counter(state = initialState, action) {
         isLoading: false,
         isError: false,
         data: action.payload.data.data,
-        message: action.payload.message
+        message: action.payload.data.message
       };
     }
     case "GETDASHBOARD_REJECTED": {
@@ -71,8 +71,7 @@ export default function counter(state = initialState, action) {
         ...state,
         isLoading: true,
         isError: true,
-        data: [],
-        message: action.payload.message
+        message: action.payload
       };
     }
     default: {

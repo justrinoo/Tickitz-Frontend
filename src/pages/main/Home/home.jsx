@@ -6,10 +6,16 @@ import UpCommingMovies from "../../../components/Upcomming-Movies";
 import JoinTickitz from "../../../components/JoinTickitz";
 import Navbar from "../../../components/Navbar";
 import Footer from "../../../components/Footer";
-class Home extends Component {
-  render() {
-    console.log(this.props);
+import { withRouter } from "react-router-dom";
 
+class Home extends Component {
+  componentDidMount() {
+    const role = localStorage.getItem("role");
+    if (role !== "user") {
+      this.props.history.push("/admin/dashboard");
+    }
+  }
+  render() {
     return (
       <>
         <Navbar />
@@ -59,4 +65,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default withRouter(Home);
