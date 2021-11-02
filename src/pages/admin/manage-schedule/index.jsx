@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Footer from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";
 import "./index.css";
+import queryString from "query-string";
 import FormSchedule from "../../../components/FormSchedule";
 import Pagination from "react-paginate";
 import Hiflix from "../../../assets/img/Sponsor1.png";
@@ -9,19 +10,24 @@ import EbvId from "../../../assets/img/Sponsor2.png";
 import CineOne21 from "../../../assets/img/Sponsor3.png";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { getAllPremiere, deletePremiere } from "../../../store/actions/premiere";
-
+import { getAllPremiere, deletePremiere, setUpdate } from "../../../store/actions/premiere";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "../../../utils/axios";
 class ManageSchedule extends Component {
   constructor(props) {
     super(props);
     this.state = {
       premiere: props.premieres.premiere,
       page: 1,
-      limit: 6,
-      totalPage: props.premieres.pageInfo.totalPage
+      limit: 3,
+      dataLocation: [],
+      setUpdate: false,
+      isUpdate: false,
+      totalPage: props.premieres.pageInfo.totalPage,
+      sort: ""
     };
   }
-
   getPremiere = () => {
     this.props.getAllPremiere(this.state.page, this.state.limit).then((response) => {
       this.setState({
@@ -29,7 +35,6 @@ class ManageSchedule extends Component {
       });
     });
   };
-
   componentDidMount() {
     const role = localStorage.getItem("role");
     if (role !== "admin") {
@@ -48,30 +53,91 @@ class ManageSchedule extends Component {
       }
     );
   };
-
   handleDeleteSchedule = (id) => {
-    this.props.deletePremiere(id).then(() => {
-      this.props.getAllPremiere(this.state.page, this.state.limit).then((response) => {
-        this.setState({
-          premiere: response.value.data.data
+    const userClicked = confirm("Premiere akan di hapus, anda yakin?");
+    if (userClicked) {
+      this.props.deletePremiere(id).then(() => {
+        toast.success("Premiere berhasil di hapus");
+        this.props.getAllPremiere(this.state.page, this.state.limit).then((response) => {
+          this.setState({
+            premiere: response.value.data.data
+          });
         });
       });
+    } else {
+      toast.error("Batal menghapus premiere");
+      return false;
+    }
+  };
+  handleUpdateSchedule = (data, id) => {
+    this.props.setUpdate(data, id);
+    this.handleSetUpdate();
+    // console.log("you have data", data);
+  };
+  handleSetUpdate = () => {
+    this.setState({
+      setUpdate: !this.state.setUpdate,
+      isUpdate: true
     });
   };
+  getLocation = async () => {
+    try {
+      const response = await axios.get("https://dev.farizdotid.com/api/daerahindonesia/provinsi");
+      this.setState({
+        dataLocation: response.data.provinsi
+      });
+    } catch (error) {
+      new Error(error.message);
+    }
+  };
+  handleSortSchedule = (event) => {
+    // console.log(event);
+    this.setState({
+      sort: event.target.value
+    });
+  };
+
+  componentDidMount() {
+    this.getLocation();
+  }
   render() {
+    console.log(this.props);
+    // const parse = queryString.parse(this.props.location.search);
+    // console.log(this.props.location.search);
     return (
       <>
         <Navbar />
         <main className="manage__schedule">
-          <FormSchedule />
+          <FormSchedule
+            setUpdate={this.state.setUpdate}
+            isUpdate={this.state.isUpdate}
+            handleSetUpdate={this.handleSetUpdate}
+            dataLocation={this.state.dataLocation}
+          />
           <div className="manage__schedule-container">
             <h3>Data Schedule</h3>
+            <ToastContainer />
             <div className="manage__schedule-search">
-              <select className="manage__schedule-form">
+              <select className="manage__schedule-form" onChange={this.handleSortSchedule}>
                 <option hidden>Sort</option>
+                <option value="ASC">$10 - $100</option>
+                <option value="DESC">$100 - $10</option>
               </select>
               <select className="manage__schedule-form">
                 <option hidden>Location</option>
+                {this.state.dataLocation.length > 0 ? (
+                  this.state.dataLocation.map((value) => {
+                    return (
+                      <>
+                        <option value={value.nama} key={value.id}>
+                          {value.nama}
+                        </option>
+                      </>
+                    );
+                  })
+                ) : (
+                  <option hidden>location not found!</option>
+                )}
               </select>
               <select className="manage__schedule-form">
                 <option hidden>Movie</option>
@@ -128,7 +194,12 @@ class ManageSchedule extends Component {
                       <span>${value.price},00/seat</span>
                     </div>
                     <div className="manage__schedule-list-card-parent">
-                      <button className="manage__schedule-list-card-button-active">Update</button>
+                      <button
+                        className="manage__schedule-list-card-button-active"
+                        onClick={() => this.handleUpdateSchedule(value, value.id_schedule)}
+                      >
+                        Update
+                      </button>
                       <button
                         className="manage__schedule-list-card-button"
                         onClick={() => this.handleDeleteSchedule(value.id_schedule)}
@@ -163,6 +234,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
+  setUpdate,
   getAllPremiere,
   deletePremiere
 };

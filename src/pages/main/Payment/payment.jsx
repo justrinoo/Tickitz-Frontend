@@ -23,7 +23,6 @@ export class Payment extends Component {
       !this.state.dateBooking ||
       !this.state.timeBooking
     ) {
-      alert("Pilih Film Terlebih Dahulu!");
       this.props.history.push("/");
     }
   }

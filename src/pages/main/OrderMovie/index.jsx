@@ -37,7 +37,6 @@ export class OrderMovie extends Component {
       !this.state.dateBooking ||
       !this.state.timeBooking
     ) {
-      alert("Pilih Film Terlebih Dahulu!");
       this.props.history.push("/");
     }
   }

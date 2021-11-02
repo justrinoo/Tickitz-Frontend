@@ -39,7 +39,7 @@ class ListMovies extends Component {
   };
 
   handleNotBookNow = () => {
-    alert("Pilih Film Terlebih dahulu!");
+    this.props.history.push("/");
   };
 
   render() {

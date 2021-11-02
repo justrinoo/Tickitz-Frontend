@@ -5,6 +5,7 @@
 - Authentication
 
   - Post Login
+  - added refresh token in login page
   - Validasi
 
 - Homepage
@@ -61,3 +62,5 @@
 - view all
 - Pemanggilan API Boleh lebih dari 2x ?
 - Loyal Points
+
+- Redux Persist => reducer yang harus di backup itu apa saja dan kapan

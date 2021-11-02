@@ -7,6 +7,8 @@ import Plus from "../../assets/img/plus.svg";
 import { connect } from "react-redux";
 import { postPremiere, getAllPremiere } from "../../store/actions/premiere";
 import { getAllMovie } from "../../store/actions/movie";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import axios from "../../utils/axios";
 class FormSchedule extends Component {
   constructor(props) {
@@ -14,8 +16,8 @@ class FormSchedule extends Component {
     this.state = {
       dataMovies: props.movie,
       dataPremiere: "",
-      dataLocation: [],
       selectTime: [],
+      isUpdate: false,
       isDisabled: false,
       isActive: false,
       isShow: false,
@@ -33,6 +35,11 @@ class FormSchedule extends Component {
     };
   }
 
+  handleSubmitUpdatePremiere = (event) => {
+    event.preventDefault();
+    console.log("form update running...", this.state.form__schedule);
+  };
+
   handleSubmitPremiere = (event) => {
     event.preventDefault();
     const newTime = this.state.selectTime;
@@ -47,39 +54,20 @@ class FormSchedule extends Component {
       premiere: this.state.dataPremiere,
       time: newTime.toString()
     };
-    if (
-      movieId === "" &&
-      location === "" &&
-      price === "" &&
-      dateStart === "" &&
-      dateEnd === "" &&
-      premiere === "" &&
-      time === ""
-    ) {
-      alert("isi form yang kosong!");
-      this.setState({
-        isError: true,
-        message: "Silahkan isi form yang kosong!"
-      });
-      // alert("isi form yang kosong!");
-    } else {
-      this.props.postPremiere(setDataPremiere).then(() => {
-        event.target.reset();
-        this.props.getAllPremiere(1, 6);
-      });
+    for (const data in setDataPremiere) {
+      if (setDataPremiere[data] === "") {
+        toast.error("Lengkapi form yang kosong!");
+        return false;
+      }
     }
+
+    this.props.postPremiere(setDataPremiere).then(() => {
+      toast.success("Schedule berhasil di tambahkan!");
+      event.target.reset();
+      this.props.getAllPremiere(1, 6);
+    });
   };
 
-  getLocation = async () => {
-    try {
-      const response = await axios.get("https://dev.farizdotid.com/api/daerahindonesia/provinsi");
-      this.setState({
-        dataLocation: response.data.provinsi
-      });
-    } catch (error) {
-      new Error(error.message);
-    }
-  };
   handleChangeInput = (event) => {
     this.setState({
       form__schedule: {
@@ -104,9 +92,9 @@ class FormSchedule extends Component {
   };
 
   componentDidMount() {
-    this.getLocation();
-    this.props.getAllMovie();
+    this.props.getAllMovie(1, 4, "ASC");
   }
+
   handleFormTime = () => {
     this.setState({
       isShow: true
@@ -121,16 +109,25 @@ class FormSchedule extends Component {
     }
   };
 
+  componentDidUpdate() {
+    if (this.props.setUpdate) {
+      this.props.handleSetUpdate();
+      this.setState({
+        form__schedule: {
+          ...this.state.form__schedule,
+          ...this.props.premiere.data
+        }
+      });
+    }
+  }
+
   render() {
-    console.log(this.state.selectTime);
     return (
       <>
+        <h5 className="manage__schedule-form-title">Form Schedule</h5>
         <section className="manage__schedule-form">
-          <h5 className="manage__schedule-form-title">Form Schedule</h5>
+          <ToastContainer />
           <form onSubmit={this.handleSubmitPremiere}>
-            {this.state.isError ? (
-              <p className="text-end text-danger fw-bold">{this.state.message}</p>
-            ) : null}
             <div className="manage__schedule-form-card">
               <div className="manage__schedule-form-card-body">
                 <img src={ManageMovie} className="img-fluid" alt="Movies" />
@@ -142,6 +139,7 @@ class FormSchedule extends Component {
                     className="manage__schedule-form-card-input"
                     name="movieId"
                     onChange={this.handleChangeInput}
+                    value={this.state.form__schedule.movieId}
                   >
                     <option hidden>Select Movie</option>
                     {this.state.dataMovies.movies.length > 0 ? (
@@ -167,8 +165,8 @@ class FormSchedule extends Component {
                     onChange={this.handleChangeInput}
                   >
                     <option hidden>Select Location</option>
-                    {this.state.dataLocation.length > 0 ? (
-                      this.state.dataLocation.map((value) => {
+                    {this.props.dataLocation.length > 0 ? (
+                      this.props.dataLocation.map((value) => {
                         return (
                           <>
                             <option value={value.nama} key={value.id}>
@@ -178,7 +176,7 @@ class FormSchedule extends Component {
                         );
                       })
                     ) : (
-                      <option hidden>movie not found!</option>
+                      <option hidden>location not found!</option>
                     )}
                   </select>
                 </div>
@@ -192,6 +190,7 @@ class FormSchedule extends Component {
                     placeholder="10"
                     name="price"
                     onChange={this.handleChangeInput}
+                    value={this.state.form__schedule.price}
                   />
                 </div>
                 <div className="col-md-3 mb-4" name="dateStart">
@@ -275,7 +274,6 @@ class FormSchedule extends Component {
                     <button
                       type="submit"
                       className="manage__schedule-form-card-button-submit manage__schedule-form-card-button-disabled"
-                      disabled={this.state.isDisabled}
                     >
                       Submit
                     </button>
@@ -291,7 +289,8 @@ class FormSchedule extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  movie: state.movie
+  movie: state.movie,
+  premiere: state.premiere
 });
 
 const mapDispatchToProps = {

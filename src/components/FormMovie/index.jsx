@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import ManageMovie from "../../assets/img/movies3.png";
 import { createMovie, getAllMovie, updateMovie } from "../../store/actions/movie";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function FormMovie(props) {
   const [dataFormMovie, setFormMovie] = useState({
     title: "",
@@ -15,9 +17,7 @@ function FormMovie(props) {
     id: "",
     image: null
   });
-
-  const [isError, setError] = useState(props.movie.isError);
-
+  const [isShow, setShow] = useState(false);
   const changeFileImage = (event) => {
     setFormMovie({ ...dataFormMovie, image: event.target.files[0] });
   };
@@ -28,23 +28,21 @@ function FormMovie(props) {
 
   const handleUpdateMovie = (event) => {
     event.preventDefault();
-    props
-      .updateMovie(dataFormMovie, dataFormMovie.id)
-      .then(() => {
-        setFormMovie({
-          title: "",
-          directedBy: "",
-          category: "",
-          casts: "",
-          releaseDate: "",
-          durationMinute: "",
-          durationHour: "",
-          synopsis: ""
-        });
-        props.getAllMovie(1, 8);
-      })
-      .catch((error) => console.log(error));
-    console.log("Handle Update...!", dataFormMovie);
+    props.updateMovie(dataFormMovie, dataFormMovie.id).then(() => {
+      props.movie.isUpdate = false;
+      toast.success("Berhasil mengubah movie");
+      setFormMovie({
+        title: "",
+        directedBy: "",
+        category: "",
+        casts: "",
+        releaseDate: "",
+        durationMinute: "",
+        durationHour: "",
+        synopsis: ""
+      });
+      props.getAllMovie(1, 8, "ASC");
+    });
   };
 
   const handleManageMovie = (event) => {
@@ -75,22 +73,30 @@ function FormMovie(props) {
     for (const movies in setDataMovie) {
       formImage.append(movies, setDataMovie[movies]);
     }
-
     for (const data in setDataMovie) {
       if (setDataMovie[data] === "") {
-        setError(true);
+        toast.error("Lengkapi Form yang kosong!");
+
         return false;
       }
     }
+
     props.createMovie(formImage).then(() => {
-      setFormMovie("");
-      event.target.reset();
-      props.getAllMovie();
-      setError(false);
+      toast.success("Berhasil menambahkan movie!");
+      setFormMovie({
+        title: "",
+        category: "",
+        directedBy: "",
+        casts: "",
+        releaseDate: "",
+        durationHour: "",
+        durationMinute: "",
+        synopsis: ""
+      });
+      props.getAllMovie(1, 8, "ASC");
     });
   };
   const handleReset = () => {
-    setError(false);
     setFormMovie({
       title: "",
       category: "",
@@ -98,7 +104,8 @@ function FormMovie(props) {
       directedBy: "",
       releaseDate: "",
       durationHour: "",
-      durationMinute: ""
+      durationMinute: "",
+      synopsis: ""
     });
     props.movie.isUpdate = false;
   };
@@ -106,16 +113,25 @@ function FormMovie(props) {
     setFormMovie({ ...props.movie.data });
   }, [props.movie.data]);
 
+  const handleShow = () => {
+    setShow(true);
+    setFormMovie({
+      title: "",
+      category: "",
+      casts: "",
+      directedBy: "",
+      releaseDate: "",
+      durationHour: "",
+      durationMinute: "",
+      synopsis: ""
+    });
+  };
   return (
     <>
       <section className="manage__movie-form">
         <div className="d-flex justify-content-between">
           <h5 className="manage__movie-form-title">Form Movie</h5>
-          {!isError ? null : (
-            <div className="alert alert-danger" role="alert">
-              Lengkapi Form Yang Kosong
-            </div>
-          )}
+          <ToastContainer />
         </div>
         <div className="manage__movie-form-card">
           <form onSubmit={props.movie.isUpdate ? handleUpdateMovie : handleManageMovie}>
@@ -227,9 +243,15 @@ lives with his Aunt May, | "
               <button className="manage__movie-card-button" onClick={handleReset}>
                 Reset
               </button>
-              <button type="submit" className="manage__movie-card-button-active">
-                {props.movie.isUpdate ? "Update" : "Submit"}
-              </button>
+              {isShow ? (
+                <button type="submit" className="manage__movie-card-button-active">
+                  {props.movie.isUpdate ? "Update" : "Submit"}
+                </button>
+              ) : (
+                <button className="manage__movie-card-button-active" onClick={handleShow}>
+                  Clear Data
+                </button>
+              )}
             </div>
           </form>
         </div>

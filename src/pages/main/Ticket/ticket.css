@@ -90,4 +90,38 @@
   .ticket__result-title {
     display: none;
   }
+  .ticket__result-body {
+    padding: 12px 21px;
+    border: none;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .ticket__result-body-space {
+    flex: 1 1 33.3333%;
+  }
+  .ticket__result-body-space span {
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .ticket__result-body-space h6 {
+    font-weight: 600;
+    color: #aaaaaa;
+    font-size: 12px;
+  }
+  .ticket__result-image-barcode {
+    width: 80%;
+    margin: auto;
+  }
+  .ticket__result-choose {
+    display: none;
+  }
+  .ticket__result-body-total {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border: 1px solid #dedede;
+    border-radius: 4px;
+    width: 100%;
+    justify-content: space-between;
+  }
 }

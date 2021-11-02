@@ -21,10 +21,10 @@ export const createMovie = (data) => {
   };
 };
 
-export const getAllMovie = (page, limit) => {
+export const getAllMovie = (page, limit, sort) => {
   return {
     type: "GETALLMOVIE",
-    payload: axios.get(`movie?searchName=&page=${page}&limit=${limit}`)
+    payload: axios.get(`movie?searchName=&page=${page}&limit=${limit}&sort=${sort}`)
   };
 };
 

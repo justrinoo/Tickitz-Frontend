@@ -9,7 +9,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 const persistConfig = {
   key: "root",
   storage: AsyncStorage,
-  whitelist: ["user", "auth", "movie", "premiere"]
+  whitelist: ["user", "auth", "premiere"]
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

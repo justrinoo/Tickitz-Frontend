@@ -49,7 +49,7 @@ function Dashboard(props) {
       history.push("/");
     }
     getLocation();
-    props.getAllMovie();
+    props.getAllMovie(1, 10, "ASC");
     props.getAllPremiere();
   }, [location, premiere, movie]);
 

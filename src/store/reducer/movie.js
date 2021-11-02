@@ -154,7 +154,7 @@ export default function movie(state = initialState, action) {
         ...state,
         isLoading: false,
         isError: false,
-        // movies: action.payload.data.data,
+        movies: action.payload.data.data,
         message: action.payload.data.message
       };
     }
@@ -167,9 +167,7 @@ export default function movie(state = initialState, action) {
       };
     }
     default: {
-      return {
-        ...state
-      };
+      return state;
     }
   }
 }

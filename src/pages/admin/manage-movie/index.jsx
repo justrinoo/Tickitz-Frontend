@@ -4,7 +4,7 @@ import Navbar from "../../../components/Navbar";
 import "./index.css";
 import FormMovie from "../../../components/FormMovie";
 import DataListMovie from "../../../components/Data-MovieList";
-import { withRouter } from "react-router-dom";
+import { withRouter, useLocation } from "react-router-dom";
 
 function ManageMovie(props) {
   useEffect(() => {
@@ -13,6 +13,7 @@ function ManageMovie(props) {
       props.history.push("/");
     }
   }, []);
+
   return (
     <>
       <Navbar />

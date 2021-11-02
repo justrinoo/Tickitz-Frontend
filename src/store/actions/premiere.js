@@ -1,5 +1,13 @@
 import axios from "../../utils/axios";
 
+export const setUpdate = (data, id) => {
+  return {
+    type: "SETUPDATE",
+    data: data,
+    id: id
+  };
+};
+
 export const getAllPremiere = (page, limit) => {
   return {
     type: "GETALLPREMIERE",

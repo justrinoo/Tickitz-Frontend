@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import {
   getAllMovie,
   deleteMovie,
@@ -14,24 +17,31 @@ import Pagination from "react-paginate";
 function DataListMovie(props) {
   const [dataMovies, setMovies] = useState(props.movie.movies);
   const [page, setPage] = useState(1);
-  const [limit] = useState(8);
+  const [limit] = useState(4);
   const [pageInfo] = useState(props.movie.pageInfo.totalPage);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
   // const [isError, setError] = useState(props.movie.isError);
   const getAllMovieData = () => {
     props
-      .getAllMovie(page, limit)
+      .getAllMovie(page, limit, sort)
       .then((response) => setMovies(response.value.data.data))
       .catch((error) => new Error(error));
   };
 
   const handleDeleteMovie = (id) => {
-    props.deleteMovie(id).then(() => {
-      props.getAllMovie(page, limit).then((response) => {
-        setMovies(response.value.data.data);
+    const userClick = confirm("Movie akan di hapus, anda yakin?");
+    if (userClick) {
+      props.deleteMovie(id).then(() => {
+        props.getAllMovie(page, limit, "ASC").then((response) => {
+          setMovies(response.value.data.data);
+          toast.success("Movie berhasil di hapus");
+        });
       });
-    });
+    } else {
+      toast.error("Batal menghapus movie!");
+      return false;
+    }
   };
 
   const handleSearch = (event) => {
@@ -47,31 +57,24 @@ function DataListMovie(props) {
   };
 
   const handleSort = (event) => {
-    // console.log(event.target.value);
     const sortValue = event.target.value;
-    props
-      .searchSort(sort)
-      .then((response) => {
-        const newData = response.value.data.data;
-        props.movie.movies = newData;
-      })
-      .catch((error) => new Error(error.message));
     setSort(sortValue);
   };
 
   const handleChangePagination = (event) => {
     const countPage = event.selected + 1;
-    setPage(countPage, () => props.getAllMovie(page, limit));
+    setPage(countPage, () => props.getAllMovie(page, limit, "ASC"));
   };
 
   useEffect(() => {
     getAllMovieData();
-  }, [page, limit, search]);
+  }, [page, limit, sort]);
 
   return (
     <>
       <section className="manage__movie-list">
         <div className="manage__movie-list-container">
+          <ToastContainer />
           <div className="manage__movie-list-row">
             <div className="manage__movie-list-column">
               <h5>Data Movie</h5>

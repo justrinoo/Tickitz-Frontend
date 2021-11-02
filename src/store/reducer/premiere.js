@@ -3,11 +3,20 @@ const initialState = {
   pageInfo: {},
   isError: false,
   isLoading: false,
+  isUpdate: false,
   message: ""
 };
 
 export default function getAllPremiere(state = initialState, action) {
   switch (action.type) {
+    case "SETUPDATE": {
+      return {
+        ...state,
+        data: action.data,
+        isUpdate: action.data ? true : false,
+        id: action.id
+      };
+    }
     case "GETALLPREMIERE_PENDING": {
       return {
         ...state,
@@ -82,10 +91,9 @@ export default function getAllPremiere(state = initialState, action) {
         message: action.payload.data.message
       };
     }
+
     default: {
-      return {
-        ...state
-      };
+      return state;
     }
   }
 }
