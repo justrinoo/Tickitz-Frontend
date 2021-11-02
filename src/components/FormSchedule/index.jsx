@@ -18,6 +18,7 @@ class FormSchedule extends Component {
       selectTime: [],
       isDisabled: false,
       isActive: false,
+      isShow: false,
       isError: false,
       message: "",
       form__schedule: {
@@ -63,18 +64,8 @@ class FormSchedule extends Component {
       // alert("isi form yang kosong!");
     } else {
       this.props.postPremiere(setDataPremiere).then(() => {
-        this.props.getAllPremiere(1, 10);
-        this.setState({
-          form__schedule: {
-            location: "",
-            movieId: "",
-            price: "",
-            dateStart: "",
-            dateEnd: "",
-            premiere: "",
-            time: ""
-          }
-        });
+        event.target.reset();
+        this.props.getAllPremiere(1, 6);
       });
     }
   };
@@ -112,19 +103,26 @@ class FormSchedule extends Component {
     }
   };
 
-  getValueTime = (event) => {
-    let value = event.target.textContent;
-    this.setState({
-      selectTime: [...this.state.selectTime, value]
-    });
-  };
-
   componentDidMount() {
     this.getLocation();
     this.props.getAllMovie();
   }
+  handleFormTime = () => {
+    this.setState({
+      isShow: true
+    });
+  };
+  handleAddedTime = (event) => {
+    if (event.key === "Enter") {
+      this.setState({
+        selectTime: [...this.state.selectTime, event.target.value],
+        isShow: false
+      });
+    }
+  };
 
   render() {
+    console.log(this.state.selectTime);
     return (
       <>
         <section className="manage__schedule-form">
@@ -243,66 +241,34 @@ class FormSchedule extends Component {
                   <label htmlFor="time">Time</label>
                   <div className="row manage__schedule-form-card-time">
                     <div className="col-md-3">
-                      <div className="manage__schedule-form-card-time-button">
-                        <img src={Plus} className="img-fluid" alt="Plus" />
+                      <div className="manage__schedule-form-card-time-button-parent">
+                        {this.state.isShow ? (
+                          <input
+                            type="text"
+                            onKeyPress={this.handleAddedTime}
+                            name="time"
+                            className="form-control w-100"
+                          />
+                        ) : (
+                          <button
+                            className="manage__schedule-form-card-time-button"
+                            onClick={this.handleFormTime}
+                          >
+                            <img src={Plus} className="img-fluid" alt="Plus" />
+                          </button>
+                        )}
                       </div>
                     </div>
-                    <div className="col-md-3">
-                      <div
-                        onClick={this.getValueTime}
-                        className="manage__schedule-form-card-time-select-time"
-                      >
-                        08:30
+                    {this.state.selectTime.map((value, index) => (
+                      <div className="col-md-3" key={index}>
+                        <div
+                          className="manage__schedule-form-card-time-select-time"
+                          style={{ cursor: "default" }}
+                        >
+                          {value}
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-md-3">
-                      <div
-                        onClick={this.getValueTime}
-                        className="manage__schedule-form-card-time-select-time"
-                      >
-                        10:30
-                      </div>
-                    </div>
-                    <div className="col-md-3">
-                      <div
-                        onClick={this.getValueTime}
-                        className="manage__schedule-form-card-time-select-time"
-                      >
-                        12:00
-                      </div>
-                    </div>
-                    <div className="col-md-3 mt-2">
-                      <div
-                        onClick={this.getValueTime}
-                        className="manage__schedule-form-card-time-select-time"
-                      >
-                        04:30
-                      </div>
-                    </div>
-                    <div className="col-md-3 mt-2">
-                      <div
-                        onClick={this.getValueTime}
-                        className="manage__schedule-form-card-time-select-time"
-                      >
-                        07:00
-                      </div>
-                    </div>
-                    <div className="col-md-3 mt-2">
-                      <div
-                        onClick={this.getValueTime}
-                        className="manage__schedule-form-card-time-select-time"
-                      >
-                        08:30
-                      </div>
-                    </div>
-                    <div className="col-md-3 mt-2">
-                      <div
-                        onClick={this.getValueTime}
-                        className="manage__schedule-form-card-time-select-time"
-                      >
-                        09:30
-                      </div>
-                    </div>
+                    ))}
                   </div>
                   <div className="d-flex justify-content-center align-items-center mt-4">
                     <button className="manage__schedule-form-card-button-reset mx-1">Reset</button>

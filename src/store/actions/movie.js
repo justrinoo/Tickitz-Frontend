@@ -41,3 +41,10 @@ export const deleteMovie = (id) => {
     payload: axios.delete(`movie/${id}`)
   };
 };
+
+export const setDataUpdate = (data) => {
+  return {
+    type: "SETDATAUPDATE",
+    data: data
+  };
+};

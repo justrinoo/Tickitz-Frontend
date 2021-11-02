@@ -38,7 +38,7 @@
   - Get Detail Movie
   - Post Movie
   - Update movie
-  - Delete movie
+  - Delete movie => Show Option "YES" OR "NO"
 
 -Schedule
 
@@ -46,7 +46,11 @@
 - Get Detail Schedule
 - Post Schedule
 - Update Schedule
-- Delete Schedule
+- Delete Schedule => Show Option "YES" OR "NO"
+
+- Search Movie & Schedule
+  - Use onKeyPress()
+  - added url params
 
 ### Question One on One DailyStandUp
 

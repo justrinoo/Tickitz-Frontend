@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Footer from "../../../components/Footer";
 import Navbar from "../../../components/Navbar";
 import axios from "../../../utils/axios";
+import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { getAllPremiere } from "../../../store/actions/premiere";
 import { getAllMovie } from "../../../store/actions/movie";
@@ -10,6 +11,7 @@ import "./index.css";
 import { Line } from "react-chartjs-2";
 
 function Dashboard(props) {
+  const history = useHistory();
   const [statistic, setStatistic] = useState(props.user.data);
   const [dataLocation, setDataLocation] = useState([]);
   const [dataMovie] = useState(props.movie);
@@ -42,6 +44,10 @@ function Dashboard(props) {
     }
   };
   useEffect(() => {
+    const role = localStorage.getItem("role");
+    if (role !== "admin") {
+      history.push("/");
+    }
     getLocation();
     props.getAllMovie();
     props.getAllPremiere();
@@ -90,7 +96,9 @@ function Dashboard(props) {
           {isError ? (
             <p className="fw-bold text-center mt-5 text-danger">Data Statistic Tidak ditemukan!</p>
           ) : (
-            <Line data={data} options={config} />
+            <div className="dashboard__chart-card">
+              <Line data={data} options={config} />
+            </div>
           )}
         </section>
         <section className="dashboard__filter">

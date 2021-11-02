@@ -10,10 +10,10 @@ import { withRouter } from "react-router-dom";
 
 class Home extends Component {
   componentDidMount() {
-    const role = localStorage.getItem("role");
-    if (role !== "user") {
-      this.props.history.push("/admin/dashboard");
-    }
+    // const role = localStorage.getItem("role");
+    // if (role !== "user") {
+    //   this.props.history.push("/");
+    // }
   }
   render() {
     return (

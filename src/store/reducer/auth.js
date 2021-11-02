@@ -59,9 +59,7 @@ export default function auth(state = inistialState, action) {
       };
     }
     default: {
-      return {
-        ...state
-      };
+      return state;
     }
   }
 }

@@ -1,72 +1,111 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import ManageMovie from "../../assets/img/movies3.png";
-import { createMovie, getAllMovie } from "../../store/actions/movie";
+import { createMovie, getAllMovie, updateMovie } from "../../store/actions/movie";
 function FormMovie(props) {
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("");
-  const [director, setDirector] = useState("");
-  const [casts, setCasts] = useState("");
-  const [releaseDate, setReleaseDate] = useState("");
-  const [durationHour, setDurationHour] = useState("");
-  const [durationMinute, setDurationMinute] = useState("");
-  const [synopsis, setSynopsis] = useState("");
-  const [image, setImage] = useState(null);
+  const [dataFormMovie, setFormMovie] = useState({
+    title: "",
+    category: "",
+    directedBy: "",
+    casts: "",
+    releaseDate: "",
+    durationHour: "",
+    durationMinute: "",
+    synopsis: "",
+    id: "",
+    image: null
+  });
+
   const [isError, setError] = useState(props.movie.isError);
-  // const [isLoading, setLoading] = useState(props.movie.isLoading);
 
   const changeFileImage = (event) => {
-    setImage(event.target.files[0]);
+    setFormMovie({ ...dataFormMovie, image: event.target.files[0] });
+  };
+
+  const handleChangeInput = (e) => {
+    setFormMovie({ ...dataFormMovie, [e.target.name]: e.target.value });
+  };
+
+  const handleUpdateMovie = (event) => {
+    event.preventDefault();
+    props
+      .updateMovie(dataFormMovie, dataFormMovie.id)
+      .then(() => {
+        setFormMovie({
+          title: "",
+          directedBy: "",
+          category: "",
+          casts: "",
+          releaseDate: "",
+          durationMinute: "",
+          durationHour: "",
+          synopsis: ""
+        });
+        props.getAllMovie(1, 8);
+      })
+      .catch((error) => console.log(error));
+    console.log("Handle Update...!", dataFormMovie);
   };
 
   const handleManageMovie = (event) => {
     event.preventDefault();
-    const formImage = new FormData();
+    const {
+      title,
+      category,
+      casts,
+      directedBy,
+      durationHour,
+      durationMinute,
+      image,
+      releaseDate,
+      synopsis
+    } = dataFormMovie;
     const setDataMovie = {
       title,
       category,
-      directedBy: director,
       casts,
-      releaseDate,
+      directedBy,
       durationHour,
       durationMinute,
-      synopsis,
-      image
+      image,
+      releaseDate,
+      synopsis
     };
+    const formImage = new FormData();
     for (const movies in setDataMovie) {
       formImage.append(movies, setDataMovie[movies]);
     }
 
-    if (
-      title === "" ||
-      category === "" ||
-      director === "" ||
-      casts === "" ||
-      releaseDate === "" ||
-      durationHour === "" ||
-      durationMinute === "" ||
-      synopsis === "" ||
-      image === ""
-    ) {
-      setError(true);
-      event.target.reset();
-    } else {
-      props.createMovie(formImage).then(() => {
-        setTitle("");
-        setCategory("");
-        setDirector("");
-        setCasts("");
-        setReleaseDate("");
-        setDurationHour("");
-        setDurationMinute("");
-        setSynopsis("");
-        setImage("");
-        event.target.reset();
-        props.getAllMovie();
-        setError(false);
-      });
+    for (const data in setDataMovie) {
+      if (setDataMovie[data] === "") {
+        setError(true);
+        return false;
+      }
     }
+    props.createMovie(formImage).then(() => {
+      setFormMovie("");
+      event.target.reset();
+      props.getAllMovie();
+      setError(false);
+    });
   };
+  const handleReset = () => {
+    setError(false);
+    setFormMovie({
+      title: "",
+      category: "",
+      casts: "",
+      directedBy: "",
+      releaseDate: "",
+      durationHour: "",
+      durationMinute: ""
+    });
+    props.movie.isUpdate = false;
+  };
+  useEffect(() => {
+    setFormMovie({ ...props.movie.data });
+  }, [props.movie.data]);
+
   return (
     <>
       <section className="manage__movie-form">
@@ -79,12 +118,12 @@ function FormMovie(props) {
           )}
         </div>
         <div className="manage__movie-form-card">
-          <form onSubmit={handleManageMovie}>
+          <form onSubmit={props.movie.isUpdate ? handleUpdateMovie : handleManageMovie}>
             <div className="manage__movie-form-card-body">
               <div className="manage__movie-form-card-image-parent">
                 <img src={ManageMovie} className="img-fluid" alt="Movie" />
               </div>
-              <input type="file" name="image" onChange={(e) => changeFileImage(e)} />
+              <input type="file" name="image" onChange={changeFileImage} />
               <div className="row manage__movie-form-card-container">
                 <div className="col-md-6">
                   <label htmlFor="title">Movie Name</label>
@@ -93,8 +132,9 @@ function FormMovie(props) {
                     className="manage__movie-form-card-input"
                     placeholder="Spider-Man: Homecoming"
                     name="title"
-                    onChange={(e) => setTitle(e.target.value)}
+                    onChange={handleChangeInput}
                     id="title"
+                    value={dataFormMovie.title}
                   />
                 </div>
                 <div className="col-md-6">
@@ -104,8 +144,9 @@ function FormMovie(props) {
                     className="manage__movie-form-card-input"
                     placeholder="Action, Adventure, Sci-Fi"
                     name="category"
-                    onChange={(e) => setCategory(e.target.value)}
+                    onChange={handleChangeInput}
                     id="category"
+                    value={dataFormMovie.category}
                   />
                 </div>
                 <div className="col-md-6">
@@ -114,9 +155,10 @@ function FormMovie(props) {
                     type="text"
                     className="manage__movie-form-card-input"
                     placeholder="Jon Watts"
-                    name="director"
-                    onChange={(e) => setDirector(e.target.value)}
-                    id="director"
+                    name="directedBy"
+                    onChange={handleChangeInput}
+                    id="directedBy"
+                    value={dataFormMovie.directedBy}
                   />
                 </div>
                 <div className="col-md-6">
@@ -126,8 +168,9 @@ function FormMovie(props) {
                     className="manage__movie-form-card-input"
                     placeholder="Tom Holland, Michael Keaton, Robert Dow.."
                     name="casts"
-                    onChange={(e) => setCasts(e.target.value)}
+                    onChange={handleChangeInput}
                     id="casts"
+                    value={dataFormMovie.casts}
                   />
                 </div>
                 <div className="col-md-6">
@@ -137,7 +180,8 @@ function FormMovie(props) {
                     className="manage__movie-form-card-input"
                     name="releaseDate"
                     id="releaseDate"
-                    onChange={(e) => setReleaseDate(e.target.value)}
+                    onChange={handleChangeInput}
+                    value={dataFormMovie.releaseDate}
                   />
                 </div>
                 <div className="col-md-3">
@@ -147,8 +191,9 @@ function FormMovie(props) {
                     className="manage__movie-form-card-input"
                     placeholder="2"
                     name="durationHour"
-                    onChange={(e) => setDurationHour(e.target.value)}
+                    onChange={handleChangeInput}
                     id="durationHour"
+                    value={dataFormMovie.durationHour}
                   />
                 </div>
                 <div className="col-md-3">
@@ -158,8 +203,9 @@ function FormMovie(props) {
                     className="manage__movie-form-card-input"
                     placeholder="13"
                     name="durationMinute"
-                    onChange={(e) => setDurationMinute(e.target.value)}
+                    onChange={handleChangeInput}
                     id="durationMinute"
+                    value={dataFormMovie.durationMinute}
                   />
                 </div>
               </div>
@@ -172,14 +218,17 @@ function FormMovie(props) {
                 placeholder="Thrilled by his experience with the Avengers, Peter returns home, where he
 lives with his Aunt May, | "
                 name="synopsis"
-                onChange={(e) => setSynopsis(e.target.value)}
+                onChange={handleChangeInput}
                 id="synopsis"
+                value={dataFormMovie.synopsis}
               />
             </div>
             <div className="manage__movie-form-card-container-button">
-              <button className="manage__movie-card-button">Reset</button>
+              <button className="manage__movie-card-button" onClick={handleReset}>
+                Reset
+              </button>
               <button type="submit" className="manage__movie-card-button-active">
-                Submit
+                {props.movie.isUpdate ? "Update" : "Submit"}
               </button>
             </div>
           </form>
@@ -193,6 +242,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
+  updateMovie,
   getAllMovie,
   createMovie
 };

@@ -8,6 +8,7 @@ import Hiflix from "../../../assets/img/Sponsor1.png";
 import EbvId from "../../../assets/img/Sponsor2.png";
 import CineOne21 from "../../../assets/img/Sponsor3.png";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { getAllPremiere, deletePremiere } from "../../../store/actions/premiere";
 
 class ManageSchedule extends Component {
@@ -30,6 +31,10 @@ class ManageSchedule extends Component {
   };
 
   componentDidMount() {
+    const role = localStorage.getItem("role");
+    if (role !== "admin") {
+      this.props.history.push("/");
+    }
     this.getPremiere();
   }
   handlePagination = (event) => {
@@ -59,9 +64,23 @@ class ManageSchedule extends Component {
         <Navbar />
         <main className="manage__schedule">
           <FormSchedule />
+          <div className="manage__schedule-container">
+            <h3>Data Schedule</h3>
+            <div className="manage__schedule-search">
+              <select className="manage__schedule-form">
+                <option hidden>Sort</option>
+              </select>
+              <select className="manage__schedule-form">
+                <option hidden>Location</option>
+              </select>
+              <select className="manage__schedule-form">
+                <option hidden>Movie</option>
+              </select>
+            </div>
+          </div>
           <section className="row manage__schedule-list mt-5">
             {this.state.premiere.length > 0 &&
-              this.state.premiere.map((value) => {
+              this.props.premieres.premiere.map((value) => {
                 return (
                   <div className="col-md-3 m-3 manage__schedule-list-card" key={value.id_schedule}>
                     <div className="manage__schedule-list-card-header">
@@ -123,10 +142,10 @@ class ManageSchedule extends Component {
           </section>
           <div>
             <Pagination
-              previousLabel={this.state.totalPage ? "previous" : null}
-              nextLabel={this.state.totalPage ? "next" : null}
+              previousLabel={"previous"}
+              nextLabel={"next"}
               breakLabel={"..."}
-              pageCount={this.state.totalPage ? this.state.totalPage : null}
+              pageCount={this.state.totalPage}
               onPageChange={this.handlePagination}
               containerClassName={"schedule__pagination"}
               activeClassName={"schedule__pagination-button"}
@@ -148,4 +167,4 @@ const mapDispatchToProps = {
   deletePremiere
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageSchedule);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ManageSchedule));

@@ -27,36 +27,39 @@ import BasicMovieDetail from "./pages/basic-livecode/DetailMovie";
 import CounterClass from "./pages/basic-livecode/Counter/counter.class";
 import CounterFunc from "./pages/basic-livecode/Counter/counter.function";
 import { Provider } from "react-redux";
-import store from "./store/store";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./store/store";
 class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Router>
-          <Switch>
-            {/* <Route path="/basic-react" exact component={BasicReact} /> */}
-            {/* <PublicRoute path="/basic-react" exact component={BasicReact} />
+        <PersistGate loading={null} persistor={persistor}>
+          <Router>
+            <Switch>
+              {/* <Route path="/basic-react" exact component={BasicReact} /> */}
+              {/* <PublicRoute path="/basic-react" exact component={BasicReact} />
             <PublicRoute path="/basic-login" restricted={true} exact component={LoginPage} />
             <PrivateRoute path="/basic-home" exact component={BasicHome} />
             <Route path="/basic-detail/:movieId" exact component={BasicMovieDetail} /> */}
-            <Route exact path="/" component={Home} />
-            <PrivateRoute exact path="/detail-movie/:movieId" component={MovieDetail} />
-            <PrivateRoute exact path="/order" component={OrderMovie} />
-            <PrivateRoute exact path="/payment" component={Payment} />
-            <PrivateRoute exact path="/profile" component={Profile} />
-            <PrivateRoute exact path="/ticket" component={Ticket} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/register" component={Register} />
+              <Route exact path="/" component={Home} />
+              <PrivateRoute exact path="/detail-movie/:movieId" component={MovieDetail} />
+              <PrivateRoute exact path="/order" component={OrderMovie} />
+              <PrivateRoute exact path="/payment" component={Payment} />
+              <PrivateRoute exact path="/profile" component={Profile} />
+              <PrivateRoute exact path="/ticket" component={Ticket} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/register" component={Register} />
 
-            {/* IsAdmin */}
-            <Route exact path="/admin/dashboard" component={Dashboard} />
-            <Route exact path="/admin/manage-movie" component={ManageMovie} />
-            <Route exact path="/admin/manage-schedule" component={ManageSchedule} />
-            {/* Redux */}
-            {/* <PublicRoute path="/basic-redux-counter-class" component={CounterClass} /> */}
-            {/* <PublicRoute path="/basic-redux-counter-function" component={CounterFunc} /> */}
-          </Switch>
-        </Router>
+              {/* IsAdmin */}
+              <PrivateRoute exact path="/admin/dashboard" component={Dashboard} />
+              <PrivateRoute exact path="/admin/manage-movie" component={ManageMovie} />
+              <PrivateRoute exact path="/admin/manage-schedule" component={ManageSchedule} />
+              {/* Redux */}
+              {/* <PublicRoute path="/basic-redux-counter-class" component={CounterClass} /> */}
+              {/* <PublicRoute path="/basic-redux-counter-function" component={CounterFunc} /> */}
+            </Switch>
+          </Router>
+        </PersistGate>
       </Provider>
     );
   }

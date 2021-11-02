@@ -67,3 +67,8 @@
   box-shadow: 0px 8px 24px rgba(95, 46, 234, 0.24);
   border-radius: 4px;
 }
+.dashboard__chart-card {
+  background-color: #ffffff;
+  margin: 10px;
+  border-radius: 4px;
+}

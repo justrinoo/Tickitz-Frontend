@@ -109,6 +109,7 @@ class ScheduleMovie extends Component {
   render() {
     const filterLocation = this.state.schedules.map((value) => value.location).pop();
     const location = filterLocation === undefined ? null : filterLocation;
+    console.log(this.state.schedules);
     return (
       <>
         <section className="detail__schedule">
@@ -137,7 +138,7 @@ class ScheduleMovie extends Component {
         <section className="detail__list_schedule">
           <div className="detail__list_schedule-container">
             <>
-              {this.state.schedules.length > 0 ? (
+              {this.state.showSchedule && this.state.schedules.length > 0 ? (
                 this.state.schedules.map((schedule) => {
                   const filterTime = schedule.time;
                   const newTime = filterTime.filter((value) => value === this.state.timeSchedule);
@@ -147,7 +148,7 @@ class ScheduleMovie extends Component {
                   ) : (
                     <div
                       key={schedule.id_schedule}
-                      className={toStringTime === this.state.timeSchedule ? null : "d-none"}
+                      className={toStringTime === this.state.timeSchedule ? "d-block" : "d-none"}
                     >
                       <div className="detail__list_schedule-card position-relative">
                         <div className="detail__list_schedule-card-body">

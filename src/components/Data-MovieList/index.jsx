@@ -6,26 +6,16 @@ import {
   deleteMovie,
   updateMovie,
   searchMovie,
-  searchSort
+  searchSort,
+  setDataUpdate
 } from "../../store/actions/movie";
 import Pagination from "react-paginate";
 
 function DataListMovie(props) {
   const [dataMovies, setMovies] = useState(props.movie.movies);
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("");
-  const [director, setDirector] = useState("");
-  const [casts, setCasts] = useState("");
-  const [releaseDate, setReleaseDate] = useState("");
-  const [durationHour, setDurationHour] = useState("");
-  const [durationMinute, setDurationMinute] = useState("");
-  const [synopsis, setSynopsis] = useState("");
-  const [image, setImage] = useState(null);
-  const [isShow, setShow] = useState({});
   const [page, setPage] = useState(1);
   const [limit] = useState(8);
   const [pageInfo] = useState(props.movie.pageInfo.totalPage);
-
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
   // const [isError, setError] = useState(props.movie.isError);
@@ -34,34 +24,6 @@ function DataListMovie(props) {
       .getAllMovie(page, limit)
       .then((response) => setMovies(response.value.data.data))
       .catch((error) => new Error(error));
-  };
-
-  const handleChangeUpdate = (id) => {
-    setShow({ ...isShow, [id]: !isShow[id] });
-  };
-
-  const handleImage = (e) => {
-    setImage(image, e.target.files[0]);
-  };
-
-  const handleUpdateMovie = (id) => {
-    const formData = new FormData();
-    const setData = {
-      title,
-      category,
-      directedBy: director,
-      casts,
-      releaseDate,
-      durationHour,
-      durationMinute,
-      synopsis,
-      image
-    };
-    for (const data in setData) {
-      formData.append(data, setData[data]);
-    }
-    props.updateMovie(formData, id);
-    window.location.reload();
   };
 
   const handleDeleteMovie = (id) => {
@@ -77,7 +39,8 @@ function DataListMovie(props) {
     props
       .searchMovie(search)
       .then((response) => {
-        setMovies(response.value.data.data);
+        const newData = response.value.data.data;
+        props.movie.movies = newData;
       })
       .catch((error) => new Error(error.message));
     setSearch(searchValue);
@@ -89,7 +52,8 @@ function DataListMovie(props) {
     props
       .searchSort(sort)
       .then((response) => {
-        setMovies(response.value.data.data);
+        const newData = response.value.data.data;
+        props.movie.movies = newData;
       })
       .catch((error) => new Error(error.message));
     setSort(sortValue);
@@ -104,7 +68,6 @@ function DataListMovie(props) {
     getAllMovieData();
   }, [page, limit, search]);
 
-  console.log(props.movie);
   return (
     <>
       <section className="manage__movie-list">
@@ -129,101 +92,42 @@ function DataListMovie(props) {
             </div>
           </div>
           <div className="manage__movie-list-card">
-            {dataMovies.length > 0 ? (
-              dataMovies.map((film) => (
-                <div className="manage__movie-list-card-body" key={film.id}>
-                  {!isShow[film.id] ? (
+            {props.movie.movies.length > 0 ? (
+              props.movie.movies.map((film) => {
+                const setDate = film.releaseDate;
+                const setNewDate = new Date(setDate).toISOString().split("T")[0];
+                const setNewDataMovie = { ...film, releaseDate: setNewDate };
+                delete setNewDataMovie.createdAt;
+                return (
+                  <div className="manage__movie-list-card-body" key={setNewDataMovie.id}>
                     <>
                       <img
-                        src={`http://localhost:3001/uploads/movie/${film.image}`}
+                        src={`http://localhost:3001/uploads/movie/${setNewDataMovie.image}`}
                         className="manage__movie-list-card-image img-fluid"
-                        alt={`Film ${film.title}`}
+                        alt={`setNewDataMovie ${setNewDataMovie.title}`}
                       />
-                      <span className="manage__movie-list-card-title-movie">{film.title}</span>
+                      <span className="manage__movie-list-card-title-movie">
+                        {setNewDataMovie.title}
+                      </span>
                       <span className="manage__movie-list-card-category-movie">
-                        {film.category}
+                        {setNewDataMovie.category}
                       </span>
                       <button
                         className="manage__movie-list-card-button-update"
-                        onClick={() => handleChangeUpdate(film.id)}
+                        onClick={() => props.setDataUpdate(setNewDataMovie, setNewDataMovie.id)}
                       >
                         Update
                       </button>
                       <button
                         className="manage__movie-list-card-button-delete"
-                        onClick={() => handleDeleteMovie(film.id)}
+                        onClick={() => handleDeleteMovie(setNewDataMovie.id)}
                       >
                         Delete
                       </button>
                     </>
-                  ) : (
-                    <>
-                      <input
-                        type="file"
-                        className="form-control mb-2"
-                        name="image"
-                        onChange={(event) => handleImage(event)}
-                      />
-                      <input
-                        type="text"
-                        className="form-control mb-2"
-                        name="title"
-                        onChange={(e) => setTitle(e.target.value)}
-                        placeholder="Name movie..."
-                      />
-                      <input
-                        type="text"
-                        className="form-control mb-2"
-                        name="category"
-                        onChange={(e) => setCategory(e.target.value)}
-                        placeholder="Category movie..."
-                      />
-                      <input
-                        type="text"
-                        className="form-control mb-2"
-                        name="director"
-                        onChange={(e) => setDirector(e.target.value)}
-                        placeholder="Director..."
-                      />
-                      <input
-                        type="text"
-                        className="form-control mb-2"
-                        name="Casts"
-                        onChange={(e) => setCasts(e.target.value)}
-                        placeholder="Casts..."
-                      />
-                      <input
-                        type="date"
-                        className="form-control mb-2"
-                        name="releaseDate"
-                        onChange={(e) => setReleaseDate(e.target.value)}
-                      />
-                      <input
-                        type="text"
-                        className="form-control mb-2"
-                        name="durationHour"
-                        onChange={(e) => setDurationHour(e.target.value)}
-                        placeholder="Duration Hour"
-                      />
-                      <input
-                        type="text"
-                        className="form-control mb-2"
-                        name="durationMinute"
-                        onChange={(e) => setDurationMinute(e.target.value)}
-                        placeholder="Duration Minute"
-                      />
-                      <input
-                        type="text"
-                        className="form-control mb-2"
-                        name="synopsis"
-                        onChange={(e) => setSynopsis(e.target.value)}
-                        placeholder="dolor sit amet consectetur adipisicing elit"
-                      />
-                      <button onClick={() => handleUpdateMovie(film.id)}>Update Movie</button>
-                    </>
-                  )}
-                </div>
-              ))
+                  </div>
+                );
+              })
             ) : (
               <p>Coming Soon!</p>
             )}
@@ -253,6 +157,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
+  setDataUpdate,
   searchMovie,
   searchSort,
   getAllMovie,

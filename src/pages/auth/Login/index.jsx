@@ -45,6 +45,8 @@ class Login extends Component {
           localStorage.setItem("role", response.value.data.data[0].role);
           if (response.value.data.data[0].role === "admin") {
             this.props.history.push("/admin/dashboard");
+          } else {
+            this.props.history.push("/");
           }
         });
         const token = response.data.data.token;

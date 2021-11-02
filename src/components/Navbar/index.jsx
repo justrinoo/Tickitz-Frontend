@@ -71,6 +71,7 @@ class Navbar extends Component {
   };
   render() {
     const token = localStorage.getItem("token");
+
     return (
       <>
         <header>

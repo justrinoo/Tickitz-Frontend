@@ -39,7 +39,7 @@ export class UserInformation extends Component {
     } else {
       axios
         .patch("user/update-profile", setDataProfile)
-        .then((response) => {
+        .then(() => {
           this.props.GetUser();
           this.setState({
             form_profile: {

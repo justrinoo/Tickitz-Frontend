@@ -4,11 +4,19 @@ const initialState = {
   isError: false,
   isLoading: false,
   isShow: false,
+  isUpdate: false,
   message: ""
 };
 
 export default function movie(state = initialState, action) {
   switch (action.type) {
+    case "SETDATAUPDATE": {
+      return {
+        ...state,
+        data: action.data,
+        isUpdate: true
+      };
+    }
     case "POSTMOVIE_PENDING": {
       return {
         ...state,
@@ -121,7 +129,7 @@ export default function movie(state = initialState, action) {
         ...state,
         isLoading: false,
         isError: false,
-        // movies: action.payload.data.data,
+        movies: action.payload.data.data,
         message: action.payload.data.message
       };
     }
