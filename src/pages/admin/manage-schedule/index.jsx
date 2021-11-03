@@ -72,7 +72,6 @@ class ManageSchedule extends Component {
   handleUpdateSchedule = (data, id) => {
     this.props.setUpdate(data, id);
     this.handleSetUpdate();
-    // console.log("you have data", data);
   };
   handleSetUpdate = () => {
     this.setState({
@@ -91,19 +90,14 @@ class ManageSchedule extends Component {
     }
   };
   handleSortSchedule = (event) => {
-    // console.log(event);
     this.setState({
       sort: event.target.value
     });
   };
-
   componentDidMount() {
     this.getLocation();
   }
   render() {
-    console.log(this.props);
-    // const parse = queryString.parse(this.props.location.search);
-    // console.log(this.props.location.search);
     return (
       <>
         <Navbar />

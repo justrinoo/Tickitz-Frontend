@@ -109,6 +109,7 @@ function FormMovie(props) {
     });
     props.movie.isUpdate = false;
   };
+
   useEffect(() => {
     setFormMovie({ ...props.movie.data });
   }, [props.movie.data]);

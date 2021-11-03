@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import { useHistory, withRouter } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -15,6 +15,7 @@ import {
 import Pagination from "react-paginate";
 
 function DataListMovie(props) {
+  const history = useHistory();
   const [dataMovies, setMovies] = useState(props.movie.movies);
   const [page, setPage] = useState(1);
   const [limit] = useState(4);
@@ -46,19 +47,23 @@ function DataListMovie(props) {
 
   const handleSearch = (event) => {
     const searchValue = event.target.value;
-    props
-      .searchMovie(search)
-      .then((response) => {
-        const newData = response.value.data.data;
-        props.movie.movies = newData;
-      })
-      .catch((error) => new Error(error.message));
+    if (event.key === "Enter") {
+      props
+        .searchMovie(search)
+        .then((response) => {
+          const newData = response.value.data.data;
+          props.movie.movies = newData;
+          history.push(`/admin/manage-movie?search=${searchValue}`);
+        })
+        .catch((error) => new Error(error.message));
+    }
     setSearch(searchValue);
   };
 
   const handleSort = (event) => {
     const sortValue = event.target.value;
     setSort(sortValue);
+    history.push(`/admin/manage-movie?sort=${event.target.value}`);
   };
 
   const handleChangePagination = (event) => {
@@ -82,15 +87,15 @@ function DataListMovie(props) {
             <div className="manage__movie-list-column">
               <select className="manage__movie-list-sort fw-bold" name="sort" onChange={handleSort}>
                 <option hidden>Sort</option>
-                <option value="ASC">Ascending</option>
-                <option value="DESC">Descending</option>
+                <option value="ASC">January - December</option>
+                <option value="DESC">December - January</option>
               </select>
               <input
                 type="text"
                 className="manage__movie-list-search"
                 placeholder="Search Movie Name..."
                 name="search"
-                onChange={handleSearch}
+                onKeyPress={handleSearch}
               />
             </div>
           </div>

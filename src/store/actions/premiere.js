@@ -1,5 +1,14 @@
 import axios from "../../utils/axios";
 
+export const searchPremiere = (movieId, location, page, limit, sort) => {
+  return {
+    type: "SEARCHPREMIERE",
+    payload: axios.get(
+      `schedule?searchMovieId=${movieId}&searchLocation=${location}&page=${page}&limit=${limit}&sort=${sort}`
+    )
+  };
+};
+
 export const setUpdate = (data, id) => {
   return {
     type: "SETUPDATE",
