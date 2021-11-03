@@ -59,6 +59,7 @@ export class OrderHistory extends Component {
   };
   render() {
     const { orders } = this.state;
+    console.log(orders);
     return (
       <>
         <div className="profile__column-settings-order-history">

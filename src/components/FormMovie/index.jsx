@@ -108,7 +108,6 @@ function FormMovie(props) {
       durationMinute: "",
       synopsis: ""
     });
-    window.location.reload();
     props.movie.isUpdate = false;
   };
 

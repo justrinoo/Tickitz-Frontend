@@ -56,7 +56,7 @@ function Dashboard(props) {
   let setDataMonth = [];
   let setDataCount = [];
 
-  statistic.map((value) => {
+  const dataDashboard = statistic.map((value) => {
     const bulan = value.month;
     const total = value.total;
     const setNewDataCount = total.split(" ");
@@ -64,6 +64,10 @@ function Dashboard(props) {
     setDataCount.push(setNewDataCount.join(""));
     setDataMonth.push(setNewDataMonth.join(""));
   });
+
+  if (!dataDashboard) {
+    return null;
+  }
 
   const labels = setDataMonth;
   const totalCount = setDataCount;

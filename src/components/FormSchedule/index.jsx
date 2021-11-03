@@ -87,6 +87,7 @@ class FormSchedule extends Component {
 
     this.props.postPremiere(setDataPremiere).then(() => {
       this.setState({
+        selectTime: [],
         form__schedule: {
           location: "",
           movie_id: "",

@@ -8,6 +8,7 @@ import FacebookIcon from "../../../assets/img/Facebook-icon.svg";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { register } from "../../../store/actions/auth";
+import { toast, ToastContainer } from "react-toastify";
 
 function Register(props) {
   const [firstName, setFirstName] = useState(" ");
@@ -25,15 +26,17 @@ function Register(props) {
       .register(setDataRegistration)
       .then(() => {
         setLoading(true);
+        toast.success("Akun berhasil dibuat, silahkan verifikasi email anda!");
         setTimeout(() => {
           props.history.push("/login");
-        }, 2500);
+        }, 3000);
       })
-      .catch(() => setError(true))
+      .catch(() => {})
       .finally(() => {
         setTimeout(() => {
           setLoading(true);
-          setError(false);
+          toast.error("Lengkapi form yang kosong...");
+          // setError(false);
         }, 2000);
       });
   };
@@ -43,6 +46,7 @@ function Register(props) {
       {/* <!-- Welcome Ticktiz --> */}
       <section className="register__tickitz">
         <div className="register__image-container">
+          <ToastContainer />
           <div className="register__overlay">
             <div className="register__overlay-parent">
               <img src={LogoTickitz} className="register__overlay-image img-fluid" alt="tickitz" />
@@ -72,11 +76,6 @@ function Register(props) {
         {/* Form Register */}
         <div className="form__parent">
           <img src={TickitzMobile} className="mb-5 d-block d-md-none" alt="Tickitz" />
-          {isLoading ? (
-            <div className="alert alert-success" role="alert">
-              {props.auth.message}
-            </div>
-          ) : null}
           <p className="form__child__title">
             {isError ? (
               <div className="alert alert-danger" role="alert">
@@ -160,7 +159,7 @@ function Register(props) {
               <label htmlFor="termsconditions">I agree to terms & conditions</label>
             </div>
             <div className="mb-3 form__auth">
-              <button type="submit" className="button__signin" disabled={isLoading}>
+              <button type="submit" className="button__signin">
                 Join for free now
               </button>
               <div className="d-flex justify-content-center mt-4 forget-password__header">
@@ -173,7 +172,6 @@ function Register(props) {
               </div>
             </div>
           </form>
-
           <div className="register__break">
             <hr />
             <p>Or</p>
