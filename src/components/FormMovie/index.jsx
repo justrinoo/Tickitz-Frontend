@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
-import ManageMovie from "../../assets/img/movies3.png";
 import { createMovie, getAllMovie, updateMovie } from "../../store/actions/movie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,6 +16,7 @@ function FormMovie(props) {
     id: "",
     image: null
   });
+  const inputFile = useRef(dataFormMovie.image);
   const [isShow, setShow] = useState(false);
   const changeFileImage = (event) => {
     setFormMovie({ ...dataFormMovie, image: event.target.files[0] });
@@ -29,8 +29,6 @@ function FormMovie(props) {
   const handleUpdateMovie = (event) => {
     event.preventDefault();
     props.updateMovie(dataFormMovie, dataFormMovie.id).then(() => {
-      props.movie.isUpdate = false;
-      toast.success("Berhasil mengubah movie");
       setFormMovie({
         title: "",
         directedBy: "",
@@ -41,7 +39,10 @@ function FormMovie(props) {
         durationHour: "",
         synopsis: ""
       });
+      toast.success("Berhasil mengubah movie");
       props.getAllMovie(1, 8, "ASC");
+      window.location.reload();
+      props.movie.isUpdate = false;
     });
   };
 
@@ -107,26 +108,19 @@ function FormMovie(props) {
       durationMinute: "",
       synopsis: ""
     });
+    window.location.reload();
     props.movie.isUpdate = false;
+  };
+
+  const handleChangeFile = () => {
+    inputFile.current.click();
   };
 
   useEffect(() => {
     setFormMovie({ ...props.movie.data });
   }, [props.movie.data]);
 
-  const handleShow = () => {
-    setShow(true);
-    setFormMovie({
-      title: "",
-      category: "",
-      casts: "",
-      directedBy: "",
-      releaseDate: "",
-      durationHour: "",
-      durationMinute: "",
-      synopsis: ""
-    });
-  };
+  console.log(props.movie.isUpdate);
   return (
     <>
       <section className="manage__movie-form">
@@ -137,10 +131,20 @@ function FormMovie(props) {
         <div className="manage__movie-form-card">
           <form onSubmit={props.movie.isUpdate ? handleUpdateMovie : handleManageMovie}>
             <div className="manage__movie-form-card-body">
-              <div className="manage__movie-form-card-image-parent">
-                <img src={ManageMovie} className="img-fluid" alt="Movie" />
+              <div className="manage__movie-form-card-image-parent" onClick={handleChangeFile}>
+                <img
+                  src="https://www.a1hosting.net/wp-content/themes/arkahost/assets/images/default.jpg"
+                  className="img-fluid"
+                  alt="Movie"
+                />
+                <input
+                  type="file"
+                  name="image"
+                  ref={inputFile}
+                  style={{ display: "none" }}
+                  onChange={changeFileImage}
+                />
               </div>
-              <input type="file" name="image" onChange={changeFileImage} />
               <div className="row manage__movie-form-card-container">
                 <div className="col-md-6">
                   <label htmlFor="title">Movie Name</label>
@@ -244,15 +248,9 @@ lives with his Aunt May, | "
               <button className="manage__movie-card-button" onClick={handleReset}>
                 Reset
               </button>
-              {isShow ? (
-                <button type="submit" className="manage__movie-card-button-active">
-                  {props.movie.isUpdate ? "Update" : "Submit"}
-                </button>
-              ) : (
-                <button className="manage__movie-card-button-active" onClick={handleShow}>
-                  Clear Data
-                </button>
-              )}
+              <button type="submit" className="manage__movie-card-button-active">
+                {props.movie.isUpdate ? "Update" : "Submit"}
+              </button>
             </div>
           </form>
         </div>

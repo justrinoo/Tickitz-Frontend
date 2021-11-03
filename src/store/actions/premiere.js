@@ -23,6 +23,14 @@ export const getAllPremiere = (page, limit) => {
     payload: axios.get(`schedule?page=${page}&limit=${limit}`)
   };
 };
+
+export const updatePremiere = (data, id) => {
+  return {
+    type: "UPDATEPREMIERE",
+    payload: axios.patch(`schedule/update/${id}`, data)
+  };
+};
+
 export const postPremiere = (data) => {
   return {
     type: "POSTPREMIERE",

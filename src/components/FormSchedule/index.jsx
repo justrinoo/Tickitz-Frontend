@@ -5,11 +5,10 @@ import Premier2 from "../../assets/img/Sponsor2.png";
 import Premier3 from "../../assets/img/Sponsor3.png";
 import Plus from "../../assets/img/plus.svg";
 import { connect } from "react-redux";
-import { postPremiere, getAllPremiere } from "../../store/actions/premiere";
+import { postPremiere, getAllPremiere, updatePremiere } from "../../store/actions/premiere";
 import { getAllMovie } from "../../store/actions/movie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "../../utils/axios";
 class FormSchedule extends Component {
   constructor(props) {
     super(props);
@@ -25,7 +24,7 @@ class FormSchedule extends Component {
       message: "",
       form__schedule: {
         location: "",
-        movieId: "",
+        movie_id: "",
         price: "",
         dateStart: "",
         dateEnd: "",
@@ -35,18 +34,43 @@ class FormSchedule extends Component {
     };
   }
 
-  handleSubmitUpdatePremiere = (event) => {
+  handleUpdateNewPremiere = (event) => {
     event.preventDefault();
-    console.log("form update running...", this.state.form__schedule);
+    const id = this.state.form__schedule.id_schedule;
+    const newTime = this.state.selectTime.toString();
+    const data = this.state.form__schedule;
+    const newData = { ...data, premiere: this.state.dataPremiere, time: newTime };
+    delete newData.createdAt;
+    this.props
+      .updatePremiere(newData, id)
+      .then(() => {
+        this.setState({
+          isUpdate: false,
+          selectTime: [],
+          form__schedule: {
+            location: "",
+            movie_id: "",
+            price: "",
+            dateStart: "",
+            dateEnd: "",
+            premiere: "",
+            time: ""
+          }
+        });
+        toast.success("Schedule berhasil di update");
+        this.props.getAllPremiere(1, 6);
+      })
+      .catch(() => {
+        toast.error("Silahkan ubah data yang baru!");
+      });
   };
 
   handleSubmitPremiere = (event) => {
     event.preventDefault();
     const newTime = this.state.selectTime;
-    const { movieId, location, price, dateStart, dateEnd, premiere, time } =
-      this.state.form__schedule;
+    const { movie_id, location, price, dateStart, dateEnd } = this.state.form__schedule;
     const setDataPremiere = {
-      movie_id: movieId,
+      movie_id: movie_id,
       location,
       price,
       dateStart,
@@ -62,6 +86,17 @@ class FormSchedule extends Component {
     }
 
     this.props.postPremiere(setDataPremiere).then(() => {
+      this.setState({
+        form__schedule: {
+          location: "",
+          movie_id: "",
+          price: "",
+          dateStart: "",
+          dateEnd: "",
+          premiere: "",
+          time: []
+        }
+      });
       toast.success("Schedule berhasil di tambahkan!");
       event.target.reset();
       this.props.getAllPremiere(1, 6);
@@ -113,6 +148,7 @@ class FormSchedule extends Component {
     if (this.props.setUpdate) {
       this.props.handleSetUpdate();
       this.setState({
+        isUpdate: true,
         form__schedule: {
           ...this.state.form__schedule,
           ...this.props.premiere.data
@@ -120,14 +156,49 @@ class FormSchedule extends Component {
       });
     }
   }
+  handleReset = () => {
+    this.setState({
+      isUpdate: false,
+      selectTime: [],
+      form__schedule: {
+        location: "",
+        movie_id: "",
+        price: "",
+        dateStart: "",
+        dateEnd: "",
+        premiere: "",
+        time: []
+      }
+    });
+    toast.warning("Reset Form...");
+    return true;
+  };
 
   render() {
+    // console.log(this.state.isUpdate ? "Update" : "Submit");
+
+    const { dateStart, dateEnd } = this.state.form__schedule;
+    const newDateStart = dateStart.split("T")[0];
+    const newDateEnd = dateEnd.split("T")[0];
+    const sameFilm = this.state.dataMovies.movies.filter((value) =>
+      value.id === this.state.form__schedule.movie_id ? value.title : ""
+    );
+    const newTime = this.state.isUpdate ? this.state.form__schedule.time : null;
+    this.state.selectTime.map((value) => {
+      return this.state.form__schedule
+        ? this.state.selectTime.map((value) => console.log("new data", value))
+        : console.log("old data", value);
+    });
     return (
       <>
         <h5 className="manage__schedule-form-title">Form Schedule</h5>
         <section className="manage__schedule-form">
           <ToastContainer />
-          <form onSubmit={this.handleSubmitPremiere}>
+          <form
+            onSubmit={
+              this.state.isUpdate ? this.handleUpdateNewPremiere : this.handleSubmitPremiere
+            }
+          >
             <div className="manage__schedule-form-card">
               <div className="manage__schedule-form-card-body">
                 <img src={ManageMovie} className="img-fluid" alt="Movies" />
@@ -137,16 +208,26 @@ class FormSchedule extends Component {
                   <label htmlFor="movie">Movie</label>
                   <select
                     className="manage__schedule-form-card-input"
-                    name="movieId"
+                    name="movie_id"
                     onChange={this.handleChangeInput}
-                    value={this.state.form__schedule.movieId}
                   >
-                    <option hidden>Select Movie</option>
+                    <option hidden>
+                      {this.state.form__schedule.movie_id
+                        ? sameFilm.map((value) => value.title)
+                        : "Select Movie"}
+                    </option>
                     {this.state.dataMovies.movies.length > 0 ? (
                       this.state.dataMovies.movies.map((value) => {
                         return (
                           <>
-                            <option value={value.id} key={value.id}>
+                            <option
+                              value={
+                                this.state.form__schedule.movie_id
+                                  ? this.state.form__schedule.movie_id
+                                  : value.id
+                              }
+                              key={value.id}
+                            >
                               {value.title}
                             </option>
                           </>
@@ -164,7 +245,11 @@ class FormSchedule extends Component {
                     name="location"
                     onChange={this.handleChangeInput}
                   >
-                    <option hidden>Select Location</option>
+                    <option hidden>
+                      {this.state.form__schedule.location
+                        ? this.state.form__schedule.location
+                        : "Select Location"}
+                    </option>
                     {this.props.dataLocation.length > 0 ? (
                       this.props.dataLocation.map((value) => {
                         return (
@@ -200,6 +285,7 @@ class FormSchedule extends Component {
                     className="manage__schedule-form-card-input"
                     name="dateStart"
                     onChange={this.handleChangeInput}
+                    value={newDateStart}
                   />
                 </div>
                 <div className="col-md-3 mb-4" name="dateEnd">
@@ -209,6 +295,7 @@ class FormSchedule extends Component {
                     className="manage__schedule-form-card-input"
                     name="dateEnd"
                     onChange={this.handleChangeInput}
+                    value={newDateEnd}
                   />
                 </div>
                 <div className="col">
@@ -242,12 +329,25 @@ class FormSchedule extends Component {
                     <div className="col-md-3">
                       <div className="manage__schedule-form-card-time-button-parent">
                         {this.state.isShow ? (
-                          <input
-                            type="text"
-                            onKeyPress={this.handleAddedTime}
-                            name="time"
-                            className="form-control w-100"
-                          />
+                          this.state.form__schedule.time ? (
+                            <input
+                              type="text"
+                              onKeyPress={this.handleAddedTime}
+                              name="time"
+                              className="form-control"
+                              style={{ width: "200px" }}
+                              defaultValue={
+                                this.state.form__schedule.time ? this.state.selectTime : ""
+                              }
+                            />
+                          ) : (
+                            <input
+                              type="text"
+                              onKeyPress={this.handleAddedTime}
+                              name="time"
+                              className="form-control w-100"
+                            />
+                          )
                         ) : (
                           <button
                             className="manage__schedule-form-card-time-button"
@@ -264,18 +364,25 @@ class FormSchedule extends Component {
                           className="manage__schedule-form-card-time-select-time"
                           style={{ cursor: "default" }}
                         >
-                          {value}
+                          {this.state.form__schedule.time
+                            ? this.state.selectTime.map((value) => value)
+                            : value}
                         </div>
                       </div>
                     ))}
                   </div>
                   <div className="d-flex justify-content-center align-items-center mt-4">
-                    <button className="manage__schedule-form-card-button-reset mx-1">Reset</button>
+                    <button
+                      className="manage__schedule-form-card-button-reset mx-1"
+                      onClick={this.handleReset}
+                    >
+                      Reset
+                    </button>
                     <button
                       type="submit"
                       className="manage__schedule-form-card-button-submit manage__schedule-form-card-button-disabled"
                     >
-                      Submit
+                      {this.state.isUpdate ? "Update" : "Submit"}
                     </button>
                   </div>
                 </div>
@@ -294,6 +401,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
+  updatePremiere,
   postPremiere,
   getAllMovie,
   getAllPremiere

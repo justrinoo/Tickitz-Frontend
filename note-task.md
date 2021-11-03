@@ -36,6 +36,7 @@
 
 - Movie
   - Get Movie
+  - Pagination => Url Parameter
   - Get Detail Movie
   - Post Movie
   - Update movie
@@ -44,6 +45,7 @@
 -Schedule
 
 - Get Schedule
+- Pagination => Url Parameter
 - Get Detail Schedule
 - Post Schedule
 - Update Schedule

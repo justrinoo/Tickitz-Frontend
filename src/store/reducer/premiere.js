@@ -13,7 +13,6 @@ export default function getAllPremiere(state = initialState, action) {
       return {
         ...state,
         data: action.data,
-        isUpdate: action.data ? true : false,
         id: action.id
       };
     }
@@ -67,6 +66,30 @@ export default function getAllPremiere(state = initialState, action) {
         message: action.payload.data.message
       };
     }
+    case "UPDATEPREMIERE_PENDING": {
+      return {
+        ...state,
+        isError: false,
+        isLoading: false,
+        message: ""
+      };
+    }
+    case "UPDATEPREMIERE_FULFILLED": {
+      return {
+        ...state,
+        isError: false,
+        isLoading: false,
+        message: action.payload.data.message
+      };
+    }
+    case "UPDATEPREMIERE_REJECTED": {
+      return {
+        ...state,
+        isError: true,
+        isLoading: true,
+        message: action.payload.data.message
+      };
+    }
     case "DELETEPREMIERE_PENDING": {
       return {
         ...state,
@@ -88,6 +111,13 @@ export default function getAllPremiere(state = initialState, action) {
         ...state,
         isError: true,
         isLoading: false,
+        message: action.payload.data.message
+      };
+    }
+    case "SEARCHPREMIERE": {
+      return {
+        ...state,
+        data: action.payload.data.data,
         message: action.payload.data.message
       };
     }

@@ -52,7 +52,11 @@ class ListMovies extends Component {
               movies.map((movie) => (
                 <div className="movies__list--card col-sm-6 col-md-2 mx-3" key={movie.id}>
                   <img
-                    src={`http://localhost:3001/uploads/movie/${movie.image}`}
+                    src={`${
+                      process.env.REACT_APP_NAME === "dev"
+                        ? `${process.env.REACT_APP_DEV}uploads/movie/${movie.image}`
+                        : `${process.env.REACT_APP_PROD}uploads/movie/${movie.image}`
+                    }`}
                     className="movies__list-image img-fluid"
                     alt={movie.title}
                   />

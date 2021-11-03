@@ -1,7 +1,11 @@
 import axios from "axios";
-console.log(process.env);
+console.log(
+  process.env.REACT_APP_NAME === "dev" ? process.env.REACT_APP_DEV : process.env.REACT_APP_PROD
+);
 const axiosApiIntances = axios.create({
-  baseURL: `http://${process.env.REACT_APP_DEV}`
+  baseURL: `${
+    process.env.REACT_APP_NAME === "dev" ? process.env.REACT_APP_DEV : process.env.REACT_APP_PROD
+  }`
 });
 
 // Add a request interceptor

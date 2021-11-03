@@ -83,7 +83,11 @@ class UpCommingMovies extends Component {
                   key={movie.id}
                 >
                   <img
-                    src={`http://localhost:3001/uploads/movie/${movie.image}`}
+                    src={`${
+                      process.env.REACT_APP_NAME === "dev"
+                        ? `${process.env.REACT_APP_DEV}uploads/movie/${movie.image}`
+                        : `${process.env.REACT_APP_PROD}uploads/movie/${movie.image}`
+                    }`}
                     alt="Movies Upcomming"
                     className="upcomming__movies--image img-fluid"
                   />

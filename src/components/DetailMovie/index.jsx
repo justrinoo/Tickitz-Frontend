@@ -38,7 +38,11 @@ class DetailMovieComponent extends Component {
             <section className="detail__movie">
               <section className="detail__movie--container">
                 <img
-                  src={`http://localhost:3001/uploads/movie/${movie.image}`}
+                  src={`${
+                    process.env.REACT_APP_NAME === "dev"
+                      ? `${process.env.REACT_APP_DEV}uploads/movie/${movie.image}`
+                      : `${process.env.REACT_APP_PROD}uploads/movie/${movie.image}`
+                  }`}
                   className="img-fluid detail__movie--image"
                   alt="Spiderman Movie"
                 />

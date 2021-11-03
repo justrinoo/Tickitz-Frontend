@@ -4,6 +4,7 @@ const initialState = {
   data: [],
   isLoading: false,
   isError: false,
+  tickedUsed: "",
   message: ""
 };
 
@@ -72,6 +73,35 @@ export default function counter(state = initialState, action) {
         isLoading: true,
         isError: true,
         message: action.payload
+      };
+    }
+
+    case "TICKETUSED_PENDING": {
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        tickedUsed: "",
+        message: ""
+      };
+    }
+    case "TICKETUSED_FULFILLED": {
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        tickedUsed: action.payload.data.data.statusTicket,
+        data: action.payload.data.data,
+        message: action.payload.data.message
+      };
+    }
+    case "TICKETUSED_REJECTED": {
+      return {
+        ...state,
+        isLoading: true,
+        isError: true,
+        tickedUsed: "",
+        message: action.payload.data.message
       };
     }
     default: {

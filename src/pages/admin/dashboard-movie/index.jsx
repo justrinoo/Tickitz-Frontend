@@ -55,7 +55,6 @@ function Dashboard(props) {
 
   let setDataMonth = [];
   let setDataCount = [];
-  // console.log("chart data =>", props.user.data);
 
   statistic.map((value) => {
     const bulan = value.month;

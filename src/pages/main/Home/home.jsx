@@ -9,12 +9,12 @@ import Footer from "../../../components/Footer";
 import { withRouter } from "react-router-dom";
 
 class Home extends Component {
-  componentDidMount() {
-    // const role = localStorage.getItem("role");
-    // if (role !== "user") {
-    //   this.props.history.push("/");
-    // }
-  }
+  // componentDidMount() {
+  //   // const role = localStorage.getItem("role");
+  //   // if (role !== "user") {
+  //   //   this.props.history.push("/admin/dashboard");
+  //   // }
+  // }
   render() {
     return (
       <>

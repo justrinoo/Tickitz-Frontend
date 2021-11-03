@@ -2,13 +2,17 @@ import React, { Component } from "react";
 import Premier1 from "../../assets/img/Sponsor3.png";
 import axios from "../../utils/axios";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { useTicked } from "../../store/actions/user";
+import { ToastContainer, toast } from "react-toastify";
 
 export class OrderHistory extends Component {
   constructor() {
     super();
     this.state = {
       orders: [],
-      showDetails: false
+      showDetails: false,
+      isTickedUsed: ""
     };
   }
 
@@ -24,7 +28,7 @@ export class OrderHistory extends Component {
           orders: response.data.data
         });
       })
-      .catch((error) => console.log(error.response));
+      .catch((error) => new Error(error));
   };
   handleShowDetails = (event) => {
     if (event.target.textContent === "Show Details") {
@@ -37,6 +41,22 @@ export class OrderHistory extends Component {
       });
     }
   };
+  handleUseTicked = (id) => {
+    this.props
+      .useTicked(id)
+      .then((response) => {
+        this.setState(
+          {
+            isTickedUsed: response.value.data.data.statusTicket
+          },
+          () => {
+            this.getOrderHistory();
+          }
+        );
+        toast.success("Ticket di aktifkan...");
+      })
+      .catch((error) => console.log(error));
+  };
   render() {
     const { orders } = this.state;
     return (
@@ -45,6 +65,7 @@ export class OrderHistory extends Component {
           {orders.length > 0 ? (
             orders.map((order) => (
               <div className="profile__column-settings-order-history-card" key={order.id}>
+                <ToastContainer />
                 <div className="profile__column-settings-order-history-desc">
                   <span className="profile__column-settings-order-history-date">
                     {new Date(order.dateBooking).toDateString()} - {order.timeBooking}pm
@@ -65,6 +86,9 @@ export class OrderHistory extends Component {
                       className={`profile__column-settings-order-history-bottom-checked-${
                         order.statusUsed !== "active" ? "used" : "active"
                       }`}
+                      onClick={
+                        order.statusUsed === "active" ? () => this.handleUseTicked(order.id) : null
+                      }
                     >
                       {order.statusUsed !== "active" ? "Ticket Used" : "Ticket in active"}
                     </button>
@@ -114,4 +138,12 @@ export class OrderHistory extends Component {
   }
 }
 
-export default OrderHistory;
+const mapStateToProps = (state) => ({
+  user: state.user
+});
+
+const mapDispatchToProps = {
+  useTicked
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(OrderHistory);

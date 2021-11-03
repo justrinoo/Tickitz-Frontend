@@ -19,3 +19,10 @@ export const getDashboard = (movieId, location, premiere) => {
     payload: axios.get(`user/dashboard?movieId=${movieId}&location=${location}&premier=${premiere}`)
   };
 };
+
+export const useTicked = (id) => {
+  return {
+    type: "TICKETUSED",
+    payload: axios.get(`booking/used-ticket/${id}`)
+  };
+};

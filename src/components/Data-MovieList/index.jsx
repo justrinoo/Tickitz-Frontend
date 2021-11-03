@@ -18,7 +18,7 @@ function DataListMovie(props) {
   const history = useHistory();
   const [dataMovies, setMovies] = useState(props.movie.movies);
   const [page, setPage] = useState(1);
-  const [limit] = useState(4);
+  const [limit] = useState(8);
   const [pageInfo] = useState(props.movie.pageInfo.totalPage);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
@@ -110,9 +110,13 @@ function DataListMovie(props) {
                   <div className="manage__movie-list-card-body" key={setNewDataMovie.id}>
                     <>
                       <img
-                        src={`http://localhost:3001/uploads/movie/${setNewDataMovie.image}`}
+                        src={`${
+                          process.env.REACT_APP_NAME === "dev"
+                            ? `${process.env.REACT_APP_DEV}uploads/movie/${film.image}`
+                            : `${process.env.REACT_APP_PROD}uploads/movie/${film.image}`
+                        }`}
                         className="manage__movie-list-card-image img-fluid"
-                        alt={`setNewDataMovie ${setNewDataMovie.title}`}
+                        alt={`${setNewDataMovie.title}`}
                       />
                       <span className="manage__movie-list-card-title-movie">
                         {setNewDataMovie.title}
