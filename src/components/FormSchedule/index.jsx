@@ -140,7 +140,7 @@ class FormSchedule extends Component {
     if (event.key === "Enter") {
       if (this.state.form__schedule.time) {
         this.setState({
-          selectTime: [event.target.value],
+          selectTime: [...this.state.selectTime, event.target.value],
           isShow: false
         });
       } else {
@@ -366,7 +366,7 @@ class FormSchedule extends Component {
                           style={{ cursor: "default" }}
                         >
                           {this.state.form__schedule.time
-                            ? this.state.selectTime.map((value) => value)
+                            ? this.state.selectTime.map((item) => item)
                             : value}
                         </div>
                       </div>
