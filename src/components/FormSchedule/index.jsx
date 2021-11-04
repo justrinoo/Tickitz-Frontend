@@ -138,10 +138,17 @@ class FormSchedule extends Component {
   };
   handleAddedTime = (event) => {
     if (event.key === "Enter") {
-      this.setState({
-        selectTime: [...this.state.selectTime, event.target.value],
-        isShow: false
-      });
+      if (this.state.form__schedule.time) {
+        this.setState({
+          selectTime: [event.target.value],
+          isShow: false
+        });
+      } else {
+        this.setState({
+          selectTime: [...this.state.selectTime, event.target.value],
+          isShow: false
+        });
+      }
     }
   };
 
@@ -184,12 +191,8 @@ class FormSchedule extends Component {
     const sameFilm = this.state.dataMovies.movies.filter((value) =>
       value.id === this.state.form__schedule.movie_id ? value.title : ""
     );
-    const newTime = this.state.isUpdate ? this.state.form__schedule.time : null;
-    this.state.selectTime.map((value) => {
-      return this.state.form__schedule
-        ? this.state.selectTime.map((value) => console.log("new data", value))
-        : console.log("old data", value);
-    });
+    console.log(this.state.selectTime);
+    console.log(this.state.form__schedule.time);
     return (
       <>
         <h5 className="manage__schedule-form-title">Form Schedule</h5>
@@ -337,9 +340,6 @@ class FormSchedule extends Component {
                               name="time"
                               className="form-control"
                               style={{ width: "200px" }}
-                              defaultValue={
-                                this.state.form__schedule.time ? this.state.selectTime : ""
-                              }
                             />
                           ) : (
                             <input

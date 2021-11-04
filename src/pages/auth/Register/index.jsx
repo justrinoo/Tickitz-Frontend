@@ -22,6 +22,11 @@ function Register(props) {
     event.preventDefault();
     setLoading(false);
     const setDataRegistration = { firstName, lastName, email, phoneNumber, password };
+    for (const data in setDataRegistration) {
+      if (setDataRegistration[data] === "") {
+        toast.error("Lengkapi Form yang kosong...");
+      }
+    }
     props
       .register(setDataRegistration)
       .then(() => {
@@ -31,16 +36,12 @@ function Register(props) {
           props.history.push("/login");
         }, 3000);
       })
-      .catch(() => {})
-      .finally(() => {
-        setTimeout(() => {
-          setLoading(true);
-          toast.error("Lengkapi form yang kosong...");
-          // setError(false);
-        }, 2000);
+      .catch((error) => {
+        toast.error(props.auth.message);
       });
   };
-  console.log(isLoading ? props.auth.message : null);
+  // console.log(isLoading ? props.auth.message : null);
+  console.log(props.auth);
   return (
     <>
       {/* <!-- Welcome Ticktiz --> */}
