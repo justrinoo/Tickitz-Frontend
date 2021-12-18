@@ -14,8 +14,8 @@ function Dashboard(props) {
   const history = useHistory();
   const [statistic, setStatistic] = useState(props.user.data);
   const [dataLocation, setDataLocation] = useState([]);
-  const [dataMovie] = useState(props.movie);
-  const [dataPremiere] = useState(props.premiere);
+  const [dataMovie, setDataMovie] = useState(props.movie);
+  const [dataPremiere, setDataPremiere] = useState(props.premiere);
   const [location, setLocation] = useState("");
   const [premiere, setPremiere] = useState("");
   const [movie, setMovie] = useState("");
@@ -51,6 +51,8 @@ function Dashboard(props) {
     getLocation();
     props.getAllMovie(1, 10, "ASC");
     props.getAllPremiere();
+    setDataMovie(props.movie);
+    setDataPremiere(props.premiere);
   }, [location, premiere, movie]);
 
   let setDataMonth = [];
@@ -89,7 +91,6 @@ function Dashboard(props) {
       responsive: true
     }
   };
-
   return (
     <>
       <Navbar />

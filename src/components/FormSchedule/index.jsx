@@ -9,10 +9,12 @@ import { postPremiere, getAllPremiere, updatePremiere } from "../../store/action
 import { getAllMovie } from "../../store/actions/movie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "../../utils/axios";
 class FormSchedule extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      displayImage: "",
       dataMovies: props.movie,
       dataPremiere: "",
       selectTime: [],
@@ -104,7 +106,8 @@ class FormSchedule extends Component {
     });
   };
 
-  handleChangeInput = (event) => {
+  handleChangeInput = (event, image) => {
+    console.log(image ? `image => ${image}` : null);
     this.setState({
       form__schedule: {
         ...this.state.form__schedule,
@@ -112,19 +115,11 @@ class FormSchedule extends Component {
       }
     });
   };
-  getValueImage = (event) => {
-    let value = event.target.alt;
-    if (value) {
-      this.setState({
-        isActive: true,
-        dataPremiere: value
-      });
-    } else {
-      this.setState({
-        isActive: false,
-        dataPremiere: null
-      });
-    }
+  getValueImage = (text) => {
+    this.setState({
+      isActive: true,
+      dataPremiere: text
+    });
   };
 
   componentDidMount() {
@@ -191,8 +186,6 @@ class FormSchedule extends Component {
     const sameFilm = this.state.dataMovies.movies.filter((value) =>
       value.id === this.state.form__schedule.movie_id ? value.title : ""
     );
-    console.log(this.state.selectTime);
-    console.log(this.state.form__schedule.time);
     return (
       <>
         <h5 className="manage__schedule-form-title">Form Schedule</h5>
@@ -213,11 +206,21 @@ class FormSchedule extends Component {
                   <select
                     className="manage__schedule-form-card-input"
                     name="movie_id"
-                    onChange={this.handleChangeInput}
+                    onChange={(event) => {
+                      {
+                        this.state.form__schedule.movie_id
+                          ? sameFilm.map((value) => {
+                              this.handleChangeInput(event, value.image);
+                            })
+                          : null;
+                      }
+                    }}
                   >
                     <option hidden>
                       {this.state.form__schedule.movie_id
-                        ? sameFilm.map((value) => value.title)
+                        ? sameFilm.map((value) => {
+                            return value.title;
+                          })
                         : "Select Movie"}
                     </option>
                     {this.state.dataMovies.movies.length > 0 ? (
@@ -309,21 +312,21 @@ class FormSchedule extends Component {
                   <div className="manage__schedule-form-card-premiere">
                     <img
                       src={Premier1}
-                      className="manage__shcedule-form-card-image img-fluid"
+                      className="manage__shcedule-form-card-image"
                       alt="Hiflix"
-                      onClick={this.getValueImage}
+                      onClick={() => this.getValueImage("Hiflix")}
                     />
                     <img
                       src={Premier2}
-                      className="manage__shcedule-form-card-image img-fluid"
+                      className="manage__shcedule-form-card-image"
                       alt="Ebv.id"
-                      onClick={this.getValueImage}
+                      onClick={() => this.getValueImage("Ebv.id")}
                     />
                     <img
                       src={Premier3}
-                      className="manage__shcedule-form-card-image img-fluid"
+                      className="manage__shcedule-form-card-image"
                       alt="CineOne21"
-                      onClick={this.getValueImage}
+                      onClick={() => this.getValueImage("CineOne21")}
                     />
                   </div>
                 </div>
@@ -359,20 +362,22 @@ class FormSchedule extends Component {
                         )}
                       </div>
                     </div>
-                    {this.state.selectTime.map((value, index) => (
-                      <div className="col-md-3" key={index}>
-                        <div
-                          className="manage__schedule-form-card-time-select-time"
-                          style={{ cursor: "default" }}
-                        >
-                          {this.state.form__schedule.time
-                            ? this.state.selectTime.map((item) => item)
-                            : value}
+                    <div className="manage__schedule-form-card-time-select-time-column">
+                      {this.state.selectTime.map((value, index) => (
+                        <div className="col-md-3" key={index}>
+                          <div
+                            className="manage__schedule-form-card-time-select-time"
+                            style={{ cursor: "default" }}
+                          >
+                            {this.state.form__schedule.time
+                              ? this.state.selectTime.map((item) => item)
+                              : value}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                  <div className="d-flex justify-content-center align-items-center mt-4">
+                  <div className="d-flex justify-content-center align-items-center mt-4 manage__schedule-form-card-button-column">
                     <button
                       className="manage__schedule-form-card-button-reset mx-1"
                       onClick={this.handleReset}

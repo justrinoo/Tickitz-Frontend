@@ -72,3 +72,22 @@
   margin: 10px;
   border-radius: 4px;
 }
+
+@media (max-width: 575.98px) {
+  .dashboard__main {
+    padding: 24px 12px;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .dashboard__chart {
+    width: 100%;
+    margin-top: 48px;
+  }
+  .dashboard__filter {
+    width: 100%;
+  }
+  .dashboard_filter,
+  h3 {
+    text-align: center;
+  }
+}

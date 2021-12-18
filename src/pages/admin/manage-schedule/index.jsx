@@ -256,7 +256,7 @@ class ManageSchedule extends Component {
                               ? CineOne21
                               : null
                           }
-                          className="manage__schedule-list-card-image w-75 img-fluid"
+                          className="manage__schedule-list-card-image img-fluid"
                           alt={
                             value.premiere === "Hiflix"
                               ? "Hiflix"

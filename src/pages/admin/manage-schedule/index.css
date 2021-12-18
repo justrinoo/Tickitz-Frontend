@@ -32,8 +32,13 @@
   cursor: pointer;
   margin: 0px 20px;
 }
+.manage__schedule-form-card-image-active {
+  border: 2px solid #5f2eea;
+  border-radius: 8px;
+}
 .manage__schedule-form-card-premiere {
   margin: 20px 0px;
+  display: flex;
 }
 
 .manage__schedule-form-card-time-button {
@@ -76,7 +81,7 @@
   display: flex;
 }
 .manage__schedule-list-card-image {
-  width: 100%;
+  width: 70%;
   margin: 10px 5px;
   object-fit: contain;
 }
@@ -190,4 +195,84 @@
   color: #4e4b66;
   font-weight: normal;
   font-size: 16px;
+}
+
+@media (max-width: 575.98px) {
+  .manage__schedule {
+    padding: 0;
+    padding: 24px 12px;
+  }
+  .manage__schedule-form {
+    margin: 0;
+  }
+  .manage__schedule-form-card {
+    padding: 0;
+    flex-direction: column;
+  }
+  .manage__schedule-form-card-body {
+    width: 70%;
+    margin: 20px auto;
+  }
+  .manage__schedule-form-card-input {
+    width: 100%;
+  }
+  .manage__schedule-form-card-row {
+    padding: 0;
+  }
+  .manage__shcedule-form-card-image {
+    width: 50px;
+    object-fit: contain;
+  }
+  .manage__schedule-form-card-time {
+    flex-direction: row;
+  }
+  .manage__schedule-form-card-time-select-time-column {
+    display: flex;
+  }
+  .manage__schedule-form-card-time-select-time {
+    margin: 10px 40px 0px 10px;
+  }
+  .manage__schedule-form-card-button-column {
+    flex-direction: column;
+  }
+  .manage__schedule-form-card-button-reset {
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  .manage__schedule-form-card-button-submit {
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  .manage__schedule-form-card-button-disabled {
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  .manage__schedule-container {
+    flex-direction: column;
+  }
+  .manage__schedule-form {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 5px;
+  }
+  .manage__schedule-list {
+    padding: 0;
+    flex-direction: column;
+  }
+  .manage__schedule-list-card-image {
+    width: 50%;
+  }
+  .manage__schedule-list-card {
+    width: 90% !important;
+  }
+  .manage__schedule-list-card-header {
+    flex-direction: column;
+  }
+  .manage__schedule-list-card-premiere {
+    margin-top: 10px;
+    text-align: center;
+  }
+  .manage__schedule-list-card-time-title {
+    width: 20% !important;
+  }
 }

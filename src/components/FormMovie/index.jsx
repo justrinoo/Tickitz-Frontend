@@ -4,6 +4,7 @@ import { createMovie, getAllMovie, updateMovie } from "../../store/actions/movie
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 function FormMovie(props) {
+  const [displayImage, setDisplayImage] = useState("");
   const [dataFormMovie, setFormMovie] = useState({
     title: "",
     category: "",
@@ -17,8 +18,9 @@ function FormMovie(props) {
     image: null
   });
   const inputFile = useRef(dataFormMovie.image);
-  const [isShow, setShow] = useState(false);
+  // const [isShow, setShow] = useState(false);
   const changeFileImage = (event) => {
+    setDisplayImage(URL.createObjectURL(event.target.files[0]));
     setFormMovie({ ...dataFormMovie, image: event.target.files[0] });
   };
 
@@ -28,7 +30,11 @@ function FormMovie(props) {
 
   const handleUpdateMovie = (event) => {
     event.preventDefault();
-    props.updateMovie(dataFormMovie, dataFormMovie.id).then(() => {
+    const formData = new FormData();
+    for (const movies in dataFormMovie) {
+      formData.append(movies, dataFormMovie[movies]);
+    }
+    props.updateMovie(formData, dataFormMovie.id).then(() => {
       setFormMovie({
         title: "",
         directedBy: "",
@@ -119,11 +125,11 @@ function FormMovie(props) {
     setFormMovie({ ...props.movie.data });
   }, [props.movie.data]);
 
-  console.log(props.movie.isUpdate);
+  // console.log("image =>", dataFormMovie.image);
   return (
     <>
       <section className="manage__movie-form">
-        <div className="d-flex justify-content-between">
+        <div className="d-flex justify-content-between manage__movie-form-column">
           <h5 className="manage__movie-form-title">Form Movie</h5>
           <ToastContainer />
         </div>
@@ -132,7 +138,11 @@ function FormMovie(props) {
             <div className="manage__movie-form-card-body">
               <div className="manage__movie-form-card-image-parent" onClick={handleChangeFile}>
                 <img
-                  src="https://www.a1hosting.net/wp-content/themes/arkahost/assets/images/default.jpg"
+                  src={
+                    dataFormMovie.image
+                      ? displayImage
+                      : "https://www.a1hosting.net/wp-content/themes/arkahost/assets/images/default.jpg"
+                  }
                   className="img-fluid"
                   alt="Movie"
                 />

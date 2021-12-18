@@ -4,6 +4,8 @@ import { Search } from "react-bootstrap-icons";
 import { Link, withRouter } from "react-router-dom";
 import Profile from "../../assets/img/Profile.png";
 import axios from "../../utils/axios";
+import { connect } from "react-redux";
+import { GetUser } from "../../store/actions/user";
 class Navbar extends Component {
   constructor() {
     super();
@@ -21,6 +23,7 @@ class Navbar extends Component {
   handleMenuMobile = () => {
     return !this.state.menu ? this.setState({ menu: true }) : this.setState({ menu: false });
   };
+
   handleLinkSignUp = () => {
     this.props.history.push("/register");
   };
@@ -69,16 +72,22 @@ class Navbar extends Component {
     alert("Thank you!");
     this.props.history.push("/login");
   };
+
+  componentDidMount() {
+    GetUser();
+  }
+
   render() {
     const token = localStorage.getItem("token");
-
+    const { user } = this.props;
+    const { image } = user.users;
     return (
       <>
         <header>
           <nav className="navigation__homepage">
             <div className="navigation__homepage__parent">
               <div className="navigation__homepage--listmenu">
-                <Link to="/" className="mx-4">
+                <Link to={this.state.role === "admin" ? "/admin/dashboard" : "/"} className="mx-4">
                   <img
                     src={LogoTickitz}
                     className="img-fluid mb-2 navigation__homepage--image"
@@ -161,7 +170,7 @@ class Navbar extends Component {
                         </div>
                       ) : null}
                     </>
-                  ) : (
+                  ) : this.state.role === "admin" ? null : (
                     <Search />
                   )}
                 </button>
@@ -169,8 +178,13 @@ class Navbar extends Component {
               <div className="mx-3 d-none d-md-inline-flex">
                 {token !== null ? (
                   <img
-                    src={Profile}
-                    className="img-fluid w-50"
+                    src={
+                      image
+                        ? `${process.env.REACT_APP_PROD}uploads/user/${image}`
+                        : "https://inspektorat.kotawaringinbaratkab.go.id/public/uploads/user/default-user-imge.jpeg"
+                    }
+                    className="img-fluid"
+                    style={{ width: 50, borderRadius: 100 }}
                     alt="Profile"
                     onClick={this.handleProfile}
                   />
@@ -181,12 +195,22 @@ class Navbar extends Component {
                 )}
               </div>
               {this.state.show ? (
-                <button
-                  onClick={this.handleLogout}
-                  className="text-decoration-none text-dark fw-bold"
-                >
-                  logout
-                </button>
+                <div style={{ position: "absolute", right: 80, top: 90 }}>
+                  <div>
+                    <button
+                      onClick={this.handleLogout}
+                      className="text-decoration-none text-dark fw-bold"
+                      style={{
+                        border: "none",
+                        padding: "12px 24px",
+                        backgroundColor: "#5F2EEA",
+                        borderRadius: 8
+                      }}
+                    >
+                      <span style={{ color: "#FFFFFF" }}>Logout</span>
+                    </button>
+                  </div>
+                </div>
               ) : null}
             </div>
           </nav>
@@ -195,29 +219,61 @@ class Navbar extends Component {
             className={"navigation__homepage--mobile d-md-none p-4 position-absolute"}
             style={{ display: `${this.state.menu ? "block" : "none"}` }}
           >
-            <input
-              type="search"
-              className="navigation__homepage--mobile__input"
-              placeholder="Search..."
-            />
-            <div className="text-center">
-              <div className="navigation__homepage--mobile-parent-link">
-                <Link to="/" className="d-block d-md-none navigation__homepage--mobile-link">
-                  Home
-                </Link>
+            {this.state.role === "admin" ? null : (
+              <input
+                type="search"
+                className="navigation__homepage--mobile__input"
+                placeholder="Search..."
+              />
+            )}
+            {this.state.role === "admin" ? (
+              <div className="text-center">
+                <div className="navigation__homepage--mobile-parent-link">
+                  <Link
+                    to="/admin/dashboard"
+                    className="d-block d-md-none navigation__homepage--mobile-link"
+                  >
+                    Dashboard
+                  </Link>
+                </div>
+                <div className="navigation__homepage--mobile-parent-link">
+                  <Link
+                    to="/admin/manage-movie"
+                    className="d-block d-md-none navigation__homepage--mobile-link"
+                  >
+                    Manage Movie
+                  </Link>
+                </div>
+                <div className="navigation__homepage--mobile-parent-link">
+                  <Link
+                    to="/admin/manage-schedule"
+                    className="d-block d-md-none navigation__homepage--mobile-link"
+                  >
+                    Manage Schedule
+                  </Link>
+                </div>
+                <p className="text-muted mt-5">&copy; 2021 Tickitz, All Rights Reserved</p>
               </div>
-              <div className="navigation__homepage--mobile-parent-link">
-                <Link to="/" className="d-block d-md-none navigation__homepage--mobile-link">
-                  Payment
-                </Link>
+            ) : (
+              <div className="text-center">
+                <div className="navigation__homepage--mobile-parent-link">
+                  <Link to="/" className="d-block d-md-none navigation__homepage--mobile-link">
+                    Home
+                  </Link>
+                </div>
+                <div className="navigation__homepage--mobile-parent-link">
+                  <Link to="/" className="d-block d-md-none navigation__homepage--mobile-link">
+                    Payment
+                  </Link>
+                </div>
+                <div className="navigation__homepage--mobile-parent-link">
+                  <Link to="/" className="d-block d-md-none navigation__homepage--mobile-link">
+                    Profile
+                  </Link>
+                </div>
+                <p className="text-muted mt-5">&copy; 2021 Tickitz, All Rights Reserved</p>
               </div>
-              <div className="navigation__homepage--mobile-parent-link">
-                <Link to="/" className="d-block d-md-none navigation__homepage--mobile-link">
-                  Profile
-                </Link>
-              </div>
-              <p className="text-muted mt-5">&copy; 2021 Tickitz, All Rights Reserved</p>
-            </div>
+            )}
           </div>
           {/* <!-- Akhir Menu Mobile --> */}
         </header>
@@ -226,4 +282,12 @@ class Navbar extends Component {
   }
 }
 
-export default withRouter(Navbar);
+const mapStateToProps = (state) => ({
+  user: state.user
+});
+
+const mapDispatchToProps = {
+  GetUser
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Navbar));
