@@ -252,6 +252,14 @@ class Navbar extends Component {
                     Manage Schedule
                   </Link>
                 </div>
+                <div className="navigation__homepage--mobile-parent-link">
+                  <Link
+                    to="/admin/manage-schedule"
+                    className="d-block d-md-none navigation__homepage--mobile-link"
+                  >
+                    Manage Schedule
+                  </Link>
+                </div>
                 <p className="text-muted mt-5">&copy; 2021 Tickitz, All Rights Reserved</p>
               </div>
             ) : (
